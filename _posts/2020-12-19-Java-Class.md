@@ -96,7 +96,7 @@ public class MyClass{
 
 ## 생성자 체이닝
 
-![이미지](https://beginnersbook.com/wp-content/uploads/2013/12/constructor_chaining.jpg)
+![이미지](https://beginnersbook.com/wp-content/uploads/2013/12/constructor_chaining.jpg)*생성자 체이닝*
 
 ## 초기화 블럭
 
