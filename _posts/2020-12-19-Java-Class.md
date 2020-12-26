@@ -1,7 +1,7 @@
 ---
 title: Java Class
 author: Jiny
-date: 2020-11-28 14:30:00 +0800
+date: 2020-12-19 14:30:00 +0800
 categories: [Java, Jasic]
 tags: [java, basics]
 toc: false
