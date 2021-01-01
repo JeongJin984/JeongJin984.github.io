@@ -1,5 +1,5 @@
 ---
-title: Java-Inheritance
+title: Java Inheritance
 author: Jiny
 date: 2020-12-26 11:19:00 +0800
 categories: [Java, Jasic]
