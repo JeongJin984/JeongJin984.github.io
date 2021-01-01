@@ -22,35 +22,35 @@ ___
 
 ```xml
 <plugin>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>build-helper-maven-plugin</artifactId>
-    <version>1.2</version>
-    <executions>
-        <execution>
-            <id>add-source-dir</id>
-            <phase>generate-sources</phase>
-            <goals>
-                <goal>add-source</goal>
-            </goals>
-            <configuration>
-                <sources>
-                    <source>another/src/main/java</source>
-                    <source>others/src</source>
-                </sources>
-            </configuration>
-        </execution>
-    </executions>
+	<groupId>org.codehaus.mojo</groupId>
+	<artifactId>build-helper-maven-plugin</artifactId>
+	<version>1.2</version>
+	<executions>
+		<execution>
+			<id>add-source-dir</id>
+			<phase>generate-sources</phase>
+			<goals>
+				<goal>add-source</goal>
+			</goals>
+			<configuration>
+				<sources>
+					<source>another/src/main/java</source>
+					<source>others/src</source>
+				</sources>
+			</configuration>
+		</execution>
+	</executions>
 </plugin>
 ```
 
 ## 저장소 추가
 
 ```xml
- <repositories>
-    <repository>
-        <id>저장소 ID</id>
-        <url>저장소 URL</url>
-    </repository>
+<repositories>
+	<repository>
+		<id>저장소 ID</id>
+		<url>저장소 URL</url>
+	</repository>
 </repositories> 
 ```
 
@@ -61,73 +61,73 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 
 ```xml
 <build>
-    <plugins>
-        <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>2.0.2</version>
-            <configuration>
-                <source>1.6</source>
-                <target>1.6</target>
-                <encoding>UTF-8</encoding>
-            </configuration>
-        </plugin>
-    </plugins>
+	<plugins>
+		<plugin>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>2.0.2</version>
+			<configuration>
+				<source>1.6</source>
+				<target>1.6</target>
+				<encoding>UTF-8</encoding>
+			</configuration>
+		</plugin>
+	</plugins>
 </build> 
 ```
 
 ## 클래스패스 설정과 -jar 옵션으로 시작할 때 사용할 메인 클래스 지정
 
 ```xml
-	<build>
-			<plugins>
-					<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jar-plugin</artifactId>
-							<version>2.2</version>
-							<configuration>
-									<archive>
-											<manifest>
-													<addClasspath>true</addClasspath>
-											</manifest>
-											<manifestEntries>
-													<Main-Class>org.krakenapps.main.Kraken</Main-Class>
-											</manifestEntries>
-									</archive>
-							</configuration>
-					</plugin>
-			</plugins>
-	</build>
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<version>2.2</version>
+			<configuration>
+				<archive>
+					<manifest>
+						<addClasspath>true</addClasspath>
+					</manifest>
+					<manifestEntries>
+						<Main-Class>org.krakenapps.main.Kraken</Main-Class>
+					</manifestEntries>
+				</archive>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
 ```
 
 ## 의존하는 라이브러리를 포함하여 하나의 JAR 파일로 패키징
 
 ```xml
 <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <Main-Class>org.krakenapps.main.Kraken</Main-Class>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<plugins>
+		<plugin>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<configuration>
+				<archive>
+					<manifest>
+						<Main-Class>org.krakenapps.main.Kraken</Main-Class>
+					</manifest>
+				</archive>
+				<descriptorRefs>
+					<descriptorRef>jar-with-dependencies</descriptorRef>
+				</descriptorRefs>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
  
 <!--//-->
 <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-       <artifactId>maven-war-plugin</artifactId>
-       <configuration>
-        <warSourceDirectory>src/main/webapp</warSourceDirectory>    
-          <!--<warSourceExcludes>common/**</warSourceExcludes> warSourceExcludes는 warSourceDirectory를 기준 특정 폴더 제외-->
-       </configuration>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-war-plugin</artifactId>
+	<configuration>
+	<warSourceDirectory>src/main/webapp</warSourceDirectory>    
+		<!--<warSourceExcludes>common/**</warSourceExcludes> warSourceExcludes는 warSourceDirectory를 기준 특정 폴더 제외-->
+	</configuration>
 </plugin> 
 ```
 
@@ -136,14 +136,14 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 <!-- 변경전 --> 
 <?xml version="1.0" encoding="UTF-8"?>
 <project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="questionbox">
-        <wb-resource deploy-path="/" source-path="/src/main/webapp" />
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources" />
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java" />
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java" />
-        <property name="context-root" value="questionbox" />
-        <property name="java-output-path" />
-    </wb-module>
+	<wb-module deploy-name="questionbox">
+		<wb-resource deploy-path="/" source-path="/src/main/webapp" />
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources" />
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java" />
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java" />
+		<property name="context-root" value="questionbox" />
+		<property name="java-output-path" />
+	</wb-module>
 </project-modules>
 ```
 
@@ -151,12 +151,12 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 <!-- 변경후 -->
 <?xml version="1.0" encoding="UTF-8"?>
 <project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="questionbox">
-        <wb-resource deploy-path="/" source-path="webapp" />
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src" />
-        <property name="context-root" value="questionbox" />
-        <property name="java-output-path" />
-    </wb-module>
+	<wb-module deploy-name="questionbox">
+		<wb-resource deploy-path="/" source-path="webapp" />
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src" />
+		<property name="context-root" value="questionbox" />
+		<property name="java-output-path" />
+	</wb-module>
 </project-modules>
 ```
 
@@ -167,53 +167,53 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 <reporting>
 	<plugins>    
 	<!-- FindBugs 리포트 생성 플러그인 -->
-    	<plugin>
-        	<groupId>org.codehaus.mojo</groupId>
-            <artifactId>findbugs-maven-plugin</artifactId>
-            <version>2.1</version>
-            <configuration>
-            	<forceEncoding>UTF-8</forceEncoding>
-                <findbugsXmlOutput>true</findbugsXmlOutput>
-                <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-                    <xmlOutput>true</xmlOutput>
-                    <xmlOutputDirectory>${basedir}/target/site</xmlOutputDirectory>
-            </configuration>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>findbugs-maven-plugin</artifactId>
+			<version>2.1</version>
+			<configuration>
+				<forceEncoding>UTF-8</forceEncoding>
+				<findbugsXmlOutput>true</findbugsXmlOutput>
+				<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+				<xmlOutput>true</xmlOutput>
+				<xmlOutputDirectory>${basedir}/target/site</xmlOutputDirectory>
+			</configuration>
 		</plugin>
-     	<plugin>
-        	<groupId>org.codehaus.mojo</groupId>
-            <artifactId>javancss-maven-plugin</artifactId>
-            <version>2.0</version>
-            <configuration>
-            	<forceEncoding>UTF-8</forceEncoding>
-                <lineThreshold>30</lineThreshold>
-                <xmlOutputDirectory>${basedir}/target/site</xmlOutputDirectory>
-                <failOnViolation>true</failOnViolation>
-                <ccnLimit>10</ccnLimit>
-                <ncssLimit>100</ncssLimit>
-            </configuration>
-        </plugin>
-        <plugin>
-        	<groupId>org.codehaus.mojo</groupId>
-            <artifactId>jdepend-maven-plugin</artifactId>
-            <version>2.0-beta-2</version>
-        </plugin>
-		<!-- PMD 리포트 생성 플러그인 -->
-        <plugin>
-    		<artifactId>maven-pmd-plugin</artifactId>
-        	<configuration>
-            	<rulesets>
-                	<ruleset>/rulesets/basic.xml</ruleset>
-                 	<ruleset>/rulesets/unusedcode.xml</ruleset>
-             	</rulesets>
-             	<sourceEncoding>UTF-8</sourceEncoding>
-             	<targetJdk>1.5</targetJdk>
-        	</configuration>
-   		</plugin>
-   		<plugin>
-        	<groupId>org.codehaus.mojo</groupId>
-            <artifactId>cobertura-maven-plugin</artifactId>
-            <version>2.3</version>
-    	</plugin>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+				<artifactId>javancss-maven-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<forceEncoding>UTF-8</forceEncoding>
+					<lineThreshold>30</lineThreshold>
+					<xmlOutputDirectory>${basedir}/target/site</xmlOutputDirectory>
+					<failOnViolation>true</failOnViolation>
+					<ccnLimit>10</ccnLimit>
+					<ncssLimit>100</ncssLimit>
+				</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>jdepend-maven-plugin</artifactId>
+			<version>2.0-beta-2</version>
+		</plugin>
+	<!-- PMD 리포트 생성 플러그인 -->
+		<plugin>
+			<artifactId>maven-pmd-plugin</artifactId>
+			<configuration>
+				<rulesets>
+						<ruleset>/rulesets/basic.xml</ruleset>
+						<ruleset>/rulesets/unusedcode.xml</ruleset>
+				</rulesets>
+				<sourceEncoding>UTF-8</sourceEncoding>
+				<targetJdk>1.5</targetJdk>
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>cobertura-maven-plugin</artifactId>
+			<version>2.3</version>
+		</plugin>
 	</plugins>
 </reporting>
 ```
@@ -241,21 +241,21 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 
 ```xml
 <build>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>2.1.2</version>
-            <executions>
-                <execution>
-                    <id>attach-sources</id>
-                    <goals>
-                        <goal>jar</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-source-plugin</artifactId>
+			<version>2.1.2</version>
+			<executions>
+				<execution>
+					<id>attach-sources</id>
+					<goals>
+						<goal>jar</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
 </build>
 ```
 
@@ -267,21 +267,21 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 
 ```xml
 <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-dependency-plugin</artifactId>
-    <executions>
-        <execution>
-            <id>copy-dependencies</id>
-            <phase>package</phase>
-            <goals>
-                <goal>copy-dependencies</goal>
-            </goals>
-            <configuration>
-                <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                <overWriteIfNewer>true</overWriteIfNewer>
-            </configuration>
-        </execution>
-    </executions>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-dependency-plugin</artifactId>
+	<executions>
+		<execution>
+			<id>copy-dependencies</id>
+			<phase>package</phase>
+			<goals>
+				<goal>copy-dependencies</goal>
+			</goals>
+			<configuration>
+				<outputDirectory>${project.build.directory}/lib</outputDirectory>
+				<overWriteIfNewer>true</overWriteIfNewer>
+			</configuration>
+		</execution>
+	</executions>
 </plugin>
 ```
 
@@ -295,17 +295,17 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 
 ```xml
 <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-jar-plugin</artifactId>
-    <configuration>
-        <archive>
-            <manifest>
-                <addClasspath>true</addClasspath>
-                <classpathPrefix>lib/</classpathPrefix>
-                <mainClass>test.Main</mainClass>
-            </manifest>
-        </archive>
-    </configuration>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-jar-plugin</artifactId>
+	<configuration>
+		<archive>
+			<manifest>
+				<addClasspath>true</addClasspath>
+				<classpathPrefix>lib/</classpathPrefix>
+				<mainClass>test.Main</mainClass>
+			</manifest>
+		</archive>
+	</configuration>
 </plugin>
 ```
 
@@ -313,27 +313,27 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 
 ```xml
 <plugin>
-    <executions>
-        <execution>
-            <id>copy-resources</id>
-            <phase>validate</phase>
-            <goals>
-                <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-                <outputDirectory>${project.basedir}/target/classes/resources</outputDirectory>
-                <resources>
-                    <resource>
-                        <directory>${project.basedir}/resources</directory>
-                        <filtering>false</filtering>
-                        <includes>
-                            <include>map/**</include>
-                            <include>properties/**</include>
-                        </includes>
-                    </resource>
-                </resources>
-            </configuration>
-        </execution>
-    </executions>
+	<executions>
+		<execution>
+			<id>copy-resources</id>
+			<phase>validate</phase>
+			<goals>
+				<goal>copy-resources</goal>
+			</goals>
+			<configuration>
+				<outputDirectory>${project.basedir}/target/classes/resources</outputDirectory>
+				<resources>
+					<resource>
+						<directory>${project.basedir}/resources</directory>
+						<filtering>false</filtering>
+						<includes>
+							<include>map/**</include>
+							<include>properties/**</include>
+						</includes>
+					</resource>
+				</resources>
+			</configuration>
+		</execution>
+	</executions>
 </plugin>
 ```
