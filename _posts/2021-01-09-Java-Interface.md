@@ -1,7 +1,7 @@
 ---
 title: Java Interface
 author: Jiny
-date: 2021-01-01 11:13:00 +0800
+date: 2021-01-09 13:09:00 +0800
 categories: [Java, Jasic]
 tags: [java, basic]
 toc: false
