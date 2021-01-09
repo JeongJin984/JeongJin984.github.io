@@ -1,0 +1,49 @@
+I"9<h2 id="용어-정리">용어 정리</h2>
+<p>###epoch</p>
+<ul>
+  <li>One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE</li>
+</ul>
+
+<p>###batch</p>
+<ul>
+  <li>Total number of training examples present in a single batch.</li>
+</ul>
+
+<h3 id="mini-batch-경사하강">mini batch 경사하강</h3>
+<ul>
+  <li>전체 데이터를 batch_size개씩 나눠 배치로 학습(배치 크기를 사용자가 지정)</li>
+</ul>
+
+<p><img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&amp;fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbkVbjU%2FbtqEtOUJD9H%2FL9KHdOnSukjHnhlRwRERy1%2Fimg.png" alt="image" /></p>
+<ul>
+  <li>BGD보다 계산량이 적다. (Batch Size에 따라 계산량 조절 가능)</li>
+  <li>Shooting이 적당히 발생한다. (Local Minima를 어느정도 회피할 수 있다.)</li>
+</ul>
+
+<h4 id="-학습-절차">@ 학습 절차</h4>
+<ol>
+  <li>훈련 데이터의 일부를 무작위로 가져옴</li>
+  <li>기울기(gradient) 산출</li>
+  <li>가중치요소 들을 기울기 방향으로 갱신</li>
+  <li>반복</li>
+</ol>
+
+<h4 id="-시험-추가">@ 시험 추가</h4>
+<blockquote>
+  <p>validation set의 추가로 정확한 성능을 체크 할 수 있다.</p>
+</blockquote>
+
+<h3 id="성능-개선">성능 개선</h3>
+<ol>
+  <li>오류 역전파
+    <blockquote>
+      <p>asdf</p>
+    </blockquote>
+  </li>
+</ol>
+
+<p><img src="https://lh3.googleusercontent.com/proxy/WQXtg6S8aXyADdcIKIuM2qO6SywQGFoKCVxWjBIcrLSdFbtvKaXtq20bvpt-yUTvQAPP2eVgi1JM74tbw3Khy1MI3PzmgQONFprzaommxH_5GCEuxUGLugeXAUQ-NJxIim4TQMX-clHvRNCSf1a19NLyKAsQ7AhkcfT6A8pIBI4NXg8kNhvUdm0NZV5BDRRarGtTSQP3Te6c5I34IqA4QSlQetg-4b05pNKqIYYX7oTZnVxda-tQ1GnT3Q989UD63YJ5qNEBzPDePDxYeBmk1c89ozkbZ65eSBm35n8hlv4" alt="image" /></p>
+
+<p>미분값을 통해 가중치를 개선하여 fitting 시키는 방법</p>
+
+:ET

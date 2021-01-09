@@ -1,0 +1,4 @@
+I"<h1 id="intorduction">Intorduction</h1>
+<p>기존의 Object detection은 입력영상안의 0~N개의 모든 클래스에 대해 Classifiaction을 수행해야 합니다. 
+classification 과 localization을 수행하는 법에 대해서 알아보겠습니다.</p>
+:ET

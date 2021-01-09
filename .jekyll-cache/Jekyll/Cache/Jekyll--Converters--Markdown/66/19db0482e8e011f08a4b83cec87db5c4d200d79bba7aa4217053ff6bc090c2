@@ -1,0 +1,8 @@
+I"�<h1 id="jvm"><strong>JVM</strong></h1>
+<hr />
+
+<h3 id="jvm이란">JVM이란</h3>
+<blockquote>
+  <p>JAVA Virtial Machine의 약자로 Java Byte Code를 OS에 맞게 해석해주는 역할을 하는 가상머신</p>
+</blockquote>
+:ET

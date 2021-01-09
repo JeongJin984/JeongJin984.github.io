@@ -99,6 +99,8 @@ kramdown:
 # or you think you're smart enough to change other relevant URLs within this template.
 permalink: /posts/:title/
 
+future: true
+
 collections:
   tabs:
     output: true

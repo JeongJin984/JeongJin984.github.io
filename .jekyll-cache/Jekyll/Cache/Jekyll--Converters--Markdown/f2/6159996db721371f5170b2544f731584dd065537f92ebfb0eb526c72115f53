@@ -1,0 +1,7 @@
+I"�<h1 id="섬의-갯수"><strong>섬의 갯수</strong></h1>
+<hr />
+<h2 id="코드"><strong>코드</strong></h2>
+<p>```java
+import java.util.*;
+import java.util.stream.IntStream;</p>
+:ET

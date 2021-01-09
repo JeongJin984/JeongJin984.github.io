@@ -1,0 +1,218 @@
+I":7<h1 id="나이트의-이동"><strong>나이트의 이동</strong></h1>
+<hr />
+<h2 id="코드"><strong>코드</strong></h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.stream.IntStream</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">Point</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">j</span><span class="o">;</span>
+
+    <span class="nc">Point</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">,</span> <span class="kt">int</span> <span class="n">j</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">i</span> <span class="o">=</span> <span class="n">i</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">j</span> <span class="o">=</span> <span class="n">j</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">static</span> <span class="kt">int</span> <span class="n">startI</span><span class="o">;</span>
+    <span class="kd">static</span> <span class="kt">int</span> <span class="n">startJ</span><span class="o">;</span>
+
+    <span class="kd">static</span> <span class="kt">int</span> <span class="n">endI</span><span class="o">;</span>
+    <span class="kd">static</span> <span class="kt">int</span> <span class="n">endJ</span><span class="o">;</span>
+
+    <span class="kd">static</span> <span class="kt">int</span> <span class="n">size</span><span class="o">;</span>
+
+    <span class="kd">static</span> <span class="kt">int</span><span class="o">[][]</span> <span class="n">map</span><span class="o">;</span>
+
+    <span class="kd">static</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">di</span> <span class="o">=</span> <span class="o">{</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">};</span>
+    <span class="kd">static</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">dj</span> <span class="o">=</span> <span class="o">{</span> <span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">,</span> <span class="o">-</span><span class="mi">2</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">1</span><span class="o">};</span>
+
+    <span class="kd">static</span> <span class="kt">int</span> <span class="nf">BFS</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">Queue</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="n">queue</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedList</span><span class="o">&lt;&gt;();</span>
+
+        <span class="n">queue</span><span class="o">.</span><span class="na">offer</span><span class="o">(</span><span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="n">startI</span><span class="o">,</span> <span class="n">startJ</span><span class="o">));</span>
+        <span class="n">map</span><span class="o">[</span><span class="n">startI</span><span class="o">][</span><span class="n">startJ</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+
+        <span class="k">while</span><span class="o">(!</span><span class="n">queue</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">Point</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="na">poll</span><span class="o">();</span>
+
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="nc">IntStream</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="mi">8</span><span class="o">).</span><span class="na">toArray</span><span class="o">())</span> <span class="o">{</span>
+                <span class="nc">Point</span> <span class="n">next</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">(</span><span class="n">cur</span><span class="o">.</span><span class="na">i</span> <span class="o">+</span> <span class="n">di</span><span class="o">[</span><span class="n">i</span><span class="o">],</span> <span class="n">cur</span><span class="o">.</span><span class="na">j</span> <span class="o">+</span> <span class="n">dj</span><span class="o">[</span><span class="n">i</span><span class="o">]);</span>
+
+                <span class="k">if</span><span class="o">(</span><span class="n">next</span><span class="o">.</span><span class="na">i</span><span class="o">&lt;</span><span class="n">size</span> <span class="o">&amp;&amp;</span> <span class="n">next</span><span class="o">.</span><span class="na">j</span><span class="o">&lt;</span><span class="n">size</span> <span class="o">&amp;&amp;</span> <span class="n">next</span><span class="o">.</span><span class="na">i</span><span class="o">&gt;=</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">next</span><span class="o">.</span><span class="na">j</span> <span class="o">&gt;=</span><span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">if</span><span class="o">(</span><span class="n">map</span><span class="o">[</span><span class="n">next</span><span class="o">.</span><span class="na">i</span><span class="o">][</span><span class="n">next</span><span class="o">.</span><span class="na">j</span><span class="o">]</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">map</span><span class="o">[</span><span class="n">next</span><span class="o">.</span><span class="na">i</span><span class="o">][</span><span class="n">next</span><span class="o">.</span><span class="na">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">map</span><span class="o">[</span><span class="n">cur</span><span class="o">.</span><span class="na">i</span><span class="o">][</span><span class="n">cur</span><span class="o">.</span><span class="na">j</span><span class="o">]</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+                        <span class="k">if</span><span class="o">(</span><span class="n">next</span><span class="o">.</span><span class="na">i</span> <span class="o">==</span> <span class="n">endI</span> <span class="o">&amp;&amp;</span> <span class="n">next</span><span class="o">.</span><span class="na">j</span> <span class="o">==</span> <span class="n">endJ</span><span class="o">)</span> <span class="k">return</span> <span class="n">map</span><span class="o">[</span><span class="n">next</span><span class="o">.</span><span class="na">i</span><span class="o">][</span><span class="n">next</span><span class="o">.</span><span class="na">j</span><span class="o">];</span>
+
+                        <span class="n">queue</span><span class="o">.</span><span class="na">offer</span><span class="o">(</span><span class="n">next</span><span class="o">);</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="o">}</span>
+
+
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	<span class="c1">// write your code here</span>
+        <span class="nc">Scanner</span> <span class="n">scanner</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Scanner</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">);</span>
+
+        <span class="kt">int</span> <span class="n">testNum</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span> <span class="o">:</span> <span class="nc">IntStream</span><span class="o">.</span><span class="na">range</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="n">testNum</span><span class="o">).</span><span class="na">toArray</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+
+            <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">size</span><span class="o">][</span><span class="n">size</span><span class="o">];</span>
+
+            <span class="n">startI</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+            <span class="n">startJ</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+
+            <span class="n">endI</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+            <span class="n">endJ</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="na">nextInt</span><span class="o">();</span>
+
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="no">BFS</span><span class="o">()</span> <span class="o">-</span> <span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p><br /></p>
+
+<h2 id="문제"><strong>문제</strong></h2>
+
+<p>체스판 위에 한 나이트가 놓여져 있다. 나이트가 한 번에 이동할 수 있는 칸은 아래 그림에 나와있다. 나이트가 이동하려고 하는 칸이 주어진다. 나이트는 몇 번 움직이면 이 칸으로 이동할 수 있을까?</p>
+
+<p><img src="https://www.acmicpc.net/upload/images/knight.png" alt="image" /></p>
+
+<h2 id="입력"><strong>입력</strong></h2>
+
+<p>입력의 첫째 줄에는 테스트 케이스의 개수가 주어진다.</p>
+
+<p>각 테스트 케이스는 세 줄로 이루어져 있다. 첫째 줄에는 체스판의 한 변의 길이 l(4 ≤ l ≤ 300)이 주어진다. 체스판의 크기는 l × l이다. 체스판의 각 칸은 두 수의 쌍 {0, …, l-1} × {0, …, l-1}로 나타낼 수 있다. 둘째 줄과 셋째 줄에는 나이트가 현재 있는 칸, 나이트가 이동하려고 하는 칸이 주어진다.</p>
+
+<h2 id="출력"><strong>출력</strong></h2>
+
+<p>각 테스트 케이스마다 나이트가 최소 몇 번만에 이동할 수 있는지 출력한다.</p>
+
+<h2 id="예시"><strong>예시</strong></h2>
+
+<ul>
+  <li>입력</li>
+</ul>
+
+<pre>
+    3
+    8
+    0 0
+    7 0
+    100
+    0 0
+    30 50
+    10
+    1 1
+    1 1
+</pre>
+
+<p>-출력</p>
+
+<pre>
+    5
+    28
+    0
+</pre>
+
+<h2 id="기본-컨셉"><strong>기본 컨셉</strong></h2>
+
+<blockquote>
+  <p>기본적인 인접행렬에서의 BFS</p>
+</blockquote>
+
+<ul>
+  <li>BFS를 진행하면서 다음 Depth에 방문할때 에 (전의 depth에 있던 노드 의 수) + 1을 하며 진행하면 BFS를 하며 Depth를 확인 가능하다.
+    <ul>
+      <li>처음에 cur이 현재 뽑은 노드이고 그 노드에 연결된 모든 노드들은 다음 Depth에 해당하는 노드이므로 (cur 위치) + 1 하면 된다.</li>
+      <li>그리고 마지막에 cur이 마지막 노드가 방문 되었을 때(모든 토마토가 익었을 때)이므로 그때의 depth를 출력</li>
+      <li><strong>다만 이 문제</strong>는 1칸씩 이동하는 것이 아닌 나이트의 한번의 움직임이 한번의 depth가 된다.</li>
+    </ul>
+  </li>
+  <li>for 문은 모든 토마토가 익었는지 확인하는 곳</li>
+</ul>
+:ET

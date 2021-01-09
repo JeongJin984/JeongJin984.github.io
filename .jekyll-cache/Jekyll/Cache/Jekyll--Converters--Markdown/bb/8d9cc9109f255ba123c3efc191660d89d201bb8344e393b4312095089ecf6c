@@ -1,0 +1,238 @@
+I"/0<h1 id="java-class">Java Class</h1>
+<hr />
+
+<h2 id="클래스를-정의하는-방법">클래스를 정의하는 방법</h2>
+
+<ol>
+  <li>클래스의 구조
+    <ul>
+      <li>시그니처</li>
+    </ul>
+    <ul>
+      <li>다른 클래스로 확장(Extends) 선언 가능 (슈퍼 클래스, 서브 클래스 관계 설정)</li>
+      <li>확장(Extends) 시, 클래스의 멤버들 접근을 제어할 수 있음 (public, protected, private 등)</li>
+      <li>다른 클래스를 인터페이스(Interface)로 선언 가능
+      - 멤버 변수: Class 안의 기능을 끄집어 낼 때 사용
+      - 메서드: 기능을 나타냄
+      - 생성자: 처음에 초기화 해줄 값</li>
+    </ul>
+  </li>
+  <li>클래스의 선언</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Practice</span><span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+    	<span class="nc">Person</span> <span class="n">junseo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">();</span> <span class="c1">// Person이라는 타입으로 메모리 요청. 이 구문이 실행시 Person 클래스의 생성자가 실행됨</span>
+        
+        <span class="nc">Person</span> <span class="n">iu</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="s">"iu"</span><span class="o">,</span> <span class="mi">27</span><span class="o">);</span> <span class="c1">// 매개변수가 있는 생성자가 호출됨.</span>
+        
+        <span class="n">iu</span><span class="o">.</span><span class="na">hello</span><span class="o">();</span> <span class="c1">// Person 클래스의 hello() 메소드가 실행됨(1번 메소드)</span>
+        <span class="n">iu</span><span class="o">.</span><span class="na">hello</span><span class="o">(</span><span class="s">"junseo"</span><span class="o">);</span> <span class="c1">// 2번 메소드</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">iu</span><span class="o">.</span><span class="na">hello1</span><span class="o">());</span> <span class="c1">// 3번 메소드</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">iu</span><span class="o">.</span><span class="na">hello1</span><span class="o">(</span><span class="s">"junseo"</span><span class="o">));</span> <span class="c1">// 4번 메소드</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ol>
+  <li>메서드의 4가지 형태
+    <ul>
+      <li>화면에 출력만 하고 끝나는 기능(ex. hello())</li>
+      <li>매개변수를 받는 경우(ex. hello(String to))</li>
+      <li>return 값을 돌려주는 경우(ex. hello1())</li>
+    </ul>
+    <ul>
+      <li>메소드 타입과 리턴 값의 타입을 맞춰줘야함
+      - 매개변수를 받아서 return 하는 경우(ex. hello1(String to))</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="클래스의-생성">클래스의 생성</h2>
+
+<blockquote>
+  <p>new 란 클래스로 부터 객체를 생성시키는 연산, 힙(Heap) 영역에 저장할 공간을 할당해서 참조 값을 객체에게 반환</p>
+</blockquote>
+
+<ul>
+  <li>클래스: 객체의 BluePrint</li>
+  <li>객체: 실제로 생성된 클래스(생성 = Instance화)</li>
+</ul>
+
+<h2 id="메서드-정의">메서드 정의</h2>
+
+<blockquote>
+  <p>메서드란 어떠한 문제를 처리하기 위한 방법을 소스 코드로 묶어놓고 필요(호출)에 따라 동작하는 기능</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClass</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">method1</span><span class="o">(){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"method1이 실행됩니다."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="생성자의-정의">생성자의 정의</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyClass</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="nf">MyClass</span><span class="o">(){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"method1이 실행됩니다."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>생성자는 접근 제한 수식어인 public, protected, private 만 가능</li>
+  <li>클래스에 생성자가 없을 경우, 기본 생성자가 자동으로 추가</li>
+  <li>클래스의 이름과 함수명이 같아야 함</li>
+  <li>(private 일 경우)외부에서 객체(instance)를 생성하는 과정을 통제하는 수단.</li>
+</ul>
+
+<h2 id="기본-생성자">기본 생성자</h2>
+
+<blockquote>
+  <p>자바는 클래스의 인스턴스가 생성될 때 마다 클래스의 생성자 메소드가 호출될 것을 보장한다. 또한 모든 서브 클래스의 인스턴스가 생성될 때마다 수퍼클래스의 생성자가 호출될 것을 보장한다.</p>
+</blockquote>
+
+<ul>
+  <li>이를 위해서 생성자의 첫번째 명령문이 this()나 super를 사용하여 다른 생성자를 명시적으로 호출하지 않는다면 super() 호출을 암시적으로 삽입한다.
+    <ul>
+      <li>즉 인자없는 생성자를 가지고 있지 않다면 이러한 암시적 호출을 컴파일 에러를 유발한다.</li>
+    </ul>
+  </li>
+  <li>상속 관계에서 모든 클래스는 Object 클래스를 상속하므로 기본적으로 모든 최상위 부모 클래스의 생성자는 super()를 암묵적으로 가진다.</li>
+</ul>
+
+<h2 id="this-키워드">this 키워드</h2>
+
+<ul>
+  <li>현재 클래스의 인스턴스를 의미</li>
+  <li>즉, 현재 클래스의 멤버변수를 지정할때 사용</li>
+  <li>동일한 이름의 파라미터가 들어올 경우, 명확히 구분</li>
+</ul>
+
+<h2 id="생성자-체이닝">생성자 체이닝</h2>
+
+<p><img src="https://beginnersbook.com/wp-content/uploads/2013/12/constructor_chaining.jpg" alt="이미지" /><em>생성자 체이닝</em></p>
+
+<h2 id="초기화-블럭">초기화 블럭</h2>
+
+<p><strong>자바에서 초기화 순서</strong></p>
+
+<ol>
+  <li>클래스 변수 : 기본값 → 명시적 초기화 → 클래스 초기화 블록</li>
+  <li>인스턴스 변수 : 기본값 → 명시적 초기화 → 인스턴스 초기화 블록 → 생성자</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Square</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="o">;</span>
+    <span class="kt">boolean</span> <span class="n">b</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<ul>
+  <li>이 경우 모든 필드 들은 primitive의 경우 0으로 reference의 경우 null로 초기화</li>
+  <li>초기화 블럭은 초기화 과정에서 로직을 추가하고 싶을 경우 사용</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="rouge-code"><pre><span class="kd">class</span> <span class="nc">InitBlock</span> <span class="o">{</span>
+
+    <span class="kd">static</span> <span class="kt">int</span> <span class="n">classVar</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>         <span class="c1">// 클래스 변수의 명시적 초기화</span>
+
+    <span class="kt">int</span> <span class="n">instanceVar</span> <span class="o">=</span> <span class="mi">10</span><span class="o">;</span>             <span class="c1">// 인스턴스 변수의 명시적 초기화</span>
+
+    <span class="kd">static</span> <span class="o">{</span> <span class="n">classVar</span> <span class="o">=</span> <span class="mi">20</span><span class="o">;</span> <span class="o">}</span>         <span class="c1">// 클래스 초기화 블록을 이용한 초기화</span>
+
+    <span class="o">{</span> <span class="n">instanceVar</span> <span class="o">=</span> <span class="mi">20</span><span class="o">;</span> <span class="o">}</span>             <span class="c1">// 인스턴스 초기화 블록을 이용한 초기화</span>
+
+    <span class="nc">InitBlock</span><span class="o">()</span> <span class="o">{</span> <span class="n">instanceVar</span> <span class="o">=</span> <span class="mi">30</span><span class="o">;</span> <span class="o">}</span> <span class="c1">// 생성자를 이용한 초기화</span>
+
+<span class="o">}</span>
+
+ 
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Member05</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">InitBlock</span><span class="o">.</span><span class="na">classVar</span><span class="o">);</span>
+
+        <span class="nc">InitBlock</span> <span class="n">myInit</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">InitBlock</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">myInit</span><span class="o">.</span><span class="na">instanceVar</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<blockquote>
+  <p>실행결과</p>
+</blockquote>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>20
+30
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>(static 블록 = 클래스 초기화 블록)</p>
+:ET
