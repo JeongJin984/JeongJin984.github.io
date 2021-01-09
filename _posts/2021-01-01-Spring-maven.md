@@ -79,23 +79,23 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 
 ```xml
 	<build>
-			<plugins>
-					<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-jar-plugin</artifactId>
-							<version>2.2</version>
-							<configuration>
-									<archive>
-											<manifest>
-													<addClasspath>true</addClasspath>
-											</manifest>
-											<manifestEntries>
-													<Main-Class>org.krakenapps.main.Kraken</Main-Class>
-											</manifestEntries>
-									</archive>
-							</configuration>
-					</plugin>
-			</plugins>
+		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Main-Class>org.krakenapps.main.Kraken</Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
 	</build>
 ```
 
