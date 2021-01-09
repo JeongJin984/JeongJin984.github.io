@@ -195,3 +195,54 @@ public class App {
 
 - Class Type 레퍼런스:  해당 클래스에 정의된 메서드 호출 가능
 - Interface Type 레퍼런스: 해당 Interface를 구현한 클래스 인스턴스를 가르킬 수 있고 해당 Interface에 선언된 메서드만 호출할 수 있음 
+
+## 다중 Interface에서의 Interface Reference
+
+> 한 클래스가 여러 개의 인터페이스를 구현했다면 각 인터페이스로 구분해서 그 객체를 사용 가능
+
+- 구현체를 어떤 Interface Reference에 담느냐에 따라 사용할 때 따르는 규칙이 달라짐
+
+```java
+public class App {
+    public static void main(String[] args){
+        System.out.println("hi");
+
+        DefaultFoo defaultFoo = new DefaultFoo();
+        defaultFoo.fooMethod();
+        defaultFoo.barMethod();
+
+        Bar bar = defaultFoo;
+        bar.barMethod();
+        bar.fooMethod();
+
+        Baz baz = defaultFoo;
+        baz.bazMethod();
+    }
+}
+```
+
+## Interface의 Default Method
+
+- 인터페이스에 메소드 선언이 아니라 **구현체**를 제공하는 방법
+- 해당 인터페이스를 구현한 클래스의 어떠한 영향없이 새로운 기능을 추가하는 방법
+- default method 는 해당 인터페이스를 구현한 **구현체가 모르게 추가된 기능임으로 그만큼 리스크가 따른다.**
+    - 컴파일 에러는 발생하지 않지만, 특정한 구현체의 로직에 따라 런타임 에러가 발생할 수 있다.
+    - 사용하게 된다면, 구현체가 잘못사용하지 않도록 반드시 문서화 하자!
+- Object가 제공하는 기능(equals, hashCode)와 같은 기본 메소드는 제공할 수 없다.
+    - 구현체가 재정의 하여 사용하는 것은 상관없다.
+- 본인이 수정할 수 있는 인터페이스에만 기본 메소드를 제공할 수 있다.
+- 인터페이스를 상속받은 인터페이스에서 다시 추상 메소드로 변경할 수 있다.
+- 인터페이스 구현체가 default method를 재정의 할 수 있다.
+
+## static method
+
+> 해당 인터페이스를 구현한 모든 인스턴스, 해당 타입에 관련되어 있는 유틸리티, 헬퍼 메소드를 제공하고 싶다면? → static method로 제공
+
+- 인스턴스 없이 수행할 수 있는 작업을 정의
+
+## Java 9
+
+> java9 에서는 추가적으로 private method 와 private static method 가 추가
+
+- 단지 특정 기능을 처리하는 내부 method일 뿐인데도, 외부에 공개되는 public method로 만들어야 하기 때문
+- 코드의 중복을 피하고 interface에 대한 캡슐화를 유지
