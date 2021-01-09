@@ -1,7 +1,7 @@
 ---
 title: Spring Maven
 author: Jiny
-date: 2020-01-01 11:13:00 +0800
+date: 2021-01-01 11:13:00 +0800
 categories: [Java, Spring]
 tags: [java, maven]
 toc: false

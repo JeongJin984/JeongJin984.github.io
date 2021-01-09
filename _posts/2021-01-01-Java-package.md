@@ -1,7 +1,7 @@
 ---
 title: Java package
 author: Jiny
-date: 2020-01-01 10:08:00 +0800
+date: 2021-01-01 10:08:00 +0800
 categories: [Java, Jasic]
 tags: [java, basics]
 toc: false
