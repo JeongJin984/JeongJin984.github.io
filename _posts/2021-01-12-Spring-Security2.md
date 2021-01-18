@@ -238,7 +238,7 @@ ___
 - FilterSecurityInterceptor로 요청이 들어옴
     - FilterInvocation 생성 및 invoke(FilterInvocation) 실행
     - invoke 실행 중 부모 클래스(AbstractSecurityInterceptor)의 beforeInvocation() 실행(권한 목록 가져옴)
-        - obtainSecurityMetadataSource() 실행 -> ExpressionBasedFilterInvocationSecurityMetadataSource가 구현하고 있으며 권한 목록을 가지고 있음
+        - obtainSecurityMetadataSource() 실행 -> ExpressionBasedFilterInvocationSecurityMetadataSource를 가지고 있으면 이것의 getAttributes를 통해 권한목록 가져옴
         - AuthenticateIfRequired(): 인증 정보
         - attemptAuthorization() 실행: accessDecisionManager로 정보를 보내서 인가 여부 확인
 
