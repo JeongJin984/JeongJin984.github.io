@@ -57,6 +57,14 @@ ___
 - 모든 필터들은 SecurityFilters라는 리스트에 담기게 되고 이는 FilterChainProxy가 가지고 있음
     - 즉 URL을 FilterChainProxy가 받아서 리스트에서 어떤 SecurityFilter를 사용할지를 결정
 
+## Config 클래스 등록
+
+- AbstractConfiguredSecurityBuilder
+    - configure(): 각 config class를 불러와서 config 작업을 수행
+        - SecurityConfigurer(I)로 저장(수많은 Configurer들이 상속)
+
+> 즉 webSecurityConfigurerAdapter가 annotation에 의해 Config로 등록되는 과정 속에서 http(AbstractConfiguredSecurityBuilder)가 config와 customConfigurerAjax에 의해 초기화 되면서 config 등록
+        
 ## Filter Process
 
 1. WebSecurity Class: FilterChainProxy를 Bean으로 등록(new FilterChainProxy(securityChains))
@@ -215,7 +223,7 @@ ___
     - ACCESS_ABSTAIN: 접근 보류(-1)
         - Voter가 해당 타입의 요청에 대해 결정을 내릴 수 없는 경우
 
-## AccessDecisionManager Process
+## AccessDecisionManager Process(인가 처리)
 
 1. FilterSecurityInterceptor(C)가 AccessDecisionManager(I)에 인가 처리 위임
     - decide(authentication, object, configAttributes)
@@ -224,5 +232,15 @@ ___
     - AccessDecisionManager(I) 구현체: AffirmativeBased, ConsensusBased, UnanimousBased
     - decide()를 통해 결정
     - voter(I)의 구현체: RoleVoter: supports()를 통해 return
+
+## 인가 처리
+
+- FilterSecurityInterceptor로 요청이 들어옴
+    - FilterInvocation 생성 및 invoke(FilterInvocation) 실행
+    - invoke 실행 중 부모 클래스(AbstractSecurityInterceptor)의 beforeInvocation() 실행(권한 목록 가져옴)
+        - obtainSecurityMetadataSource() 실행 -> ExpressionBasedFilterInvocationSecurityMetadataSource가 구현하고 있으며 권한 목록을 가지고 있음
+        - AuthenticateIfRequired(): 인증 정보
+        - attemptAuthorization() 실행: accessDecisionManager로 정보를 보내서 인가 여부 확인
+
 
 
