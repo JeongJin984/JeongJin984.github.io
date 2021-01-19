@@ -239,6 +239,8 @@ ___
     - FilterInvocation 생성 및 invoke(FilterInvocation) 실행
     - invoke 실행 중 부모 클래스(AbstractSecurityInterceptor)의 beforeInvocation() 실행(권한 목록 가져옴)
         - obtainSecurityMetadataSource() 실행 -> ExpressionBasedFilterInvocationSecurityMetadataSource를 가지고 있으면 이것의 getAttributes를 통해 권한목록 가져옴
+            - 일치하는 것이 없으면 null을 return 하는데 이러면 따로 인증이나 인가 처리를 하지 않음
+            - /admin/** 이 등록되어 있으면 제한된 사용자만 접속 허용 등록 안되 있는것들은 그냥 허용(return null)하겠다는 뜻
         - AuthenticateIfRequired(): 인증 정보
         - attemptAuthorization() 실행: accessDecisionManager로 정보를 보내서 인가 여부 확인
 
