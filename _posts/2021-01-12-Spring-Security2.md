@@ -243,6 +243,20 @@ ___
             - /admin/** 이 등록되어 있으면 제한된 사용자만 접속 허용 등록 안되 있는것들은 그냥 허용(return null)하겠다는 뜻
         - AuthenticateIfRequired(): 인증 정보
         - attemptAuthorization() 실행: accessDecisionManager로 정보를 보내서 인가 여부 확인
+        
+## 메서드 방식 인가처리
 
+1. DefaultAdvisorAutoProxtCreator가 MethodSecurityMetadataSourceAdvisor를 통해 Bean을 검사한 후 해당 Bean의 Proxy 객체를 생성(초기화).
+    1. MethodSecurityMetadataSourcePointcut이 MSMSA의 MethodSecurityMetadataSource를 받아서 getAttrubutes를 통해 Bean 과 권한정보을 찾습니다.
+        - 찾은 Bean들의 정보를 이용해 Interceptor에 advisor(MethodSecurityInterceptor)를 등록합니다.
+        - 권한 정보는 attributeCache에다가 저장
+        - 즉 annotation이 달린 메서드는 Proxy 생성 대상
+2. 생성된 Proxy 객체 안에 MSMSA도 담김 (MSMSA 안에 PointCut이랑 Interceptor 다있음)
+3. 요청이 들어오면 해당 객체의 Proxy로 넘어가서 MethodSecurityInterceptor로 요청을 넘기면서 인가가 시작됨
+    - DelegatingMethodSecurityMetadataSource가 가진 Prepost...나 Secured... 를 통해(getAttributes할때 캐쉬에 담긴 Attributes를 가져옴) 인가 처리
+    - custom하게 metadatasource 추가 가능
 
+- PrePostAnnotationSecurityMetadataSource:  extracts metadata from the @PreFilter and @PreAuthorize annotations placed on a method.
+    - 이것의 getAttributes는 attr을 return 하는데 여기에 표현식 등이 담김
+- SecuredAnnotationSecurityMetadataSource: 똑같음 얘는 extractAttributes
 
