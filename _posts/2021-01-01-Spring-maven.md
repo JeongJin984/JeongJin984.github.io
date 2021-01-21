@@ -1,7 +1,7 @@
 ---
 title: Spring Maven
 author: Jiny
-date: 2020-01-01 11:13:00 +0800
+date: 2021-01-01 11:13:00 +0800
 categories: [Java, Spring]
 tags: [java, maven]
 toc: false
@@ -78,6 +78,7 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 ## 클래스패스 설정과 -jar 옵션으로 시작할 때 사용할 메인 클래스 지정
 
 ```xml
+<<<<<<< HEAD
 <build>
 	<plugins>
 		<plugin>
@@ -97,6 +98,27 @@ profiles > profile > repositories 밑에 repository 설정을 넣으면 됨.
 		</plugin>
 	</plugins>
 </build>
+=======
+	<build>
+		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Main-Class>org.krakenapps.main.Kraken</Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+	</build>
+>>>>>>> 9438b4f595ba84d65f529b16f1aefa9448730b3e
 ```
 
 ## 의존하는 라이브러리를 포함하여 하나의 JAR 파일로 패키징
