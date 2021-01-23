@@ -10,6 +10,28 @@ toc: false
 # Java Thread
 ___
 
+## Thread LifeCycle
+
+![image](https://miro.medium.com/max/700/1*Dfl8EQlWdIebwAh9UinLMA.jpeg)
+
+- New: Thread.start() 하면 실행됨
+- Runnable: start하면 runnable로 바뀜
+  - Control이 Thread Scheduler로 가서 실행을 기다림
+- Running: Scheduler가 실행을 시킨 상태
+- Blocked
+  - Waiting for I/O resources
+  - Waiting for a monitor lock
+- Waiting: 다른 Thread가 특정 action을 perform하길 기다리는 상태
+  - Object.wait with no timeout
+  - Thread.join with no timeout
+  - 예를 들어 Object.wait()를 특정 object에 호출한 후 다른 쓰레드가 Object.notify or Object.notifyAll()를 그 Object에 호출하기를 기다리는 상태
+  - waiting이 끝나면 Runnable로 돌아감
+- Timed_Waiting: 밑의 함수를 호출 해서 waiting 상태
+  - Thread.sleep
+  - Object.wait with timeout
+  - Thread.join with timeout
+- Terminated: run()이 끝나면 자원을 반납하고 종료
+
 ## Thread 생성자
 
 |함수|설명|
@@ -159,9 +181,132 @@ public class Test implements Runnable {
 - 특징
   - Thread t = new Thread(new Test(i));
 
+## Thread 우선순위
 
+> 우선순위라는 속성(멤버변수)의 값에 따라 쓰레드가 얻는 실행시간이 달라짐
 
+- 쓰레드가 수행하는 작업의 중요도에 따라 쓰레드의 우선순위를 서로 다르게 지정하여 특정 쓰레드가 더 많은 작업시간을 갖도록 할 수 있다
 
+```java
+class ThreadPriority {
 
+	public static void main(String args[]) {
 
+		A th1 = new A();
+		B th2 = new B();
 
+		th1.setPriority(4); // defalut 우선순위 5
+		th2.setPriority(7);
+
+		System.out.println("Priority of th1(-): " + th1.getPriority());
+		System.out.println("Priority of th2(|): " + th2.getPriority());
+
+		th1.start();
+		th2.start();
+
+	}
+
+}
+
+class A extends Thread {
+
+	public void run() {
+		for(int i=0; i < 300; i++) {
+			System.out.print("-");
+			for(int x=0; x < 10000000; x++);
+		}
+	}
+}
+
+class B extends Thread {
+
+	public void run() {
+		for(int i=0; i < 300; i++) {
+			System.out.print("|");
+			for(int x=0; x < 10000000; x++);
+		}
+	}	
+}
+```
+
+우선순위가 높은 th2의 실행시간이 th1에 비해 상당히 늘어난다.
+
+## Main 쓰레드
+
+> 메인이 수행하는 스레드 public static void main(String[] args)
+
+![image](https://2.bp.blogspot.com/-LR5DRGuoL1g/Wa-KoLJVdvI/AAAAAAAABTQ/8Fl2OhPww6MtTkxxqpNCYmUWv1-Ftan0QCLcBGAs/s1600/main-thread-in-java.jpeg)
+
+- The main thread is created automatically when our program is started
+  
+### Main Thread Controll
+
+```java
+public class Test extends Thread {
+	public static void main(String[] args) {
+
+	// getting reference to Main thread
+	Thread t = Thread.currentThread();
+  
+	// getting name of Main thread
+	System.out.println("Current thread: " + t.getName());
+  
+	// changing the name of Main thread
+	t.setName("Geeks");
+	System.out.println("After name change: " + t.getName());
+  
+	// getting priority of Main thread
+	System.out.println("Main thread priority: "+ t.getPriority());
+  
+	// setting priority of Main thread to MAX(10)
+	t.setPriority(MAX_PRIORITY);
+  
+	System.out.println("Main thread new priority: "+ t.getPriority());
+  
+	for (int i = 0; i < 2; i++) {
+		System.out.println("Main thread");
+	}
+  
+	// Main thread creating a child thread
+	ChildThread ct = new ChildThread();
+
+	// getting priority of child thread
+	// which will be inherited from Main thread
+	// as it is created by Main thread
+	System.out.println("Child thread priority: "+ ct.getPriority());
+
+	// setting priority of Main thread to MIN(1)
+	ct.setPriority(MIN_PRIORITY);
+
+	System.out.println("Child thread new priority: "+ ct.getPriority());
+
+	// starting child thread
+	ct.start();
+	}
+}
+
+// Child Thread class
+class ChildThread extends Thread {
+	@Override
+	public void run() {
+		for (int i = 0; i < 2; i++){
+			System.out.println("Child thread");
+		}
+	}
+}
+```
+
+**output**
+
+```
+Current thread: main
+After name change: Geeks
+Main thread priority: 5
+Main thread new priority: 10
+Main thread
+Main thread
+Child thread priority: 10
+Child thread new priority: 1
+Child thread
+Child thread
+```
