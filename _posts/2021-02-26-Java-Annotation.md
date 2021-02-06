@@ -95,6 +95,17 @@ ___
 
 ___
 
+## 🔘 Annotation Processsor 동작
+
+Annotation Processor는 여러번 반복해서 수행된다.(라운드에 기초하여)
+각 라운드는 컴파일러가 어노테이션을 검색하고, 해당 어노테이션에 맞는 Processor를 선택하는 것 부터 시작된다.
+
+> If any files are generated during this process, another round is started with the generated files as its input. This process continues until no new files are generated during the processing stage.
+
+Annotation Processor 또한 JVM 위에서 돌아가므로 라이브러리를 사용할 수 있다. 이렇게 만든 Processor를 .jar 파일로 만들어야 하는데 이렇게 압축할 때 META-INF/services 안에 있는 Processor를 같이 압축해줘야 한다.(google의 auto-service를 사용하면 알아서 해준다.)
+
+___
+
 ## 🔘 Annotation Processsor 사용
 
 모든 프로세서들은 AbstractProcessor를 상속받아야 한다.
@@ -133,20 +144,11 @@ private Set<String> arrayToSet(...)
 
 ___
 
-## 🔘 Annotation Processsor 동작
-
-Annotation Processor는 여러번 반복해서 수행된다.
-각 라운드는 컴파일러가 어노테이션을 검색하고, 해당 어노테이션에 맞는 Processor를 선택하는 것 부터 시작된다.
-
-> If any files are generated during this process, another round is started with the generated files as its input. This process continues until no new files are generated during the processing stage.
-
-Annotation Processor 또한 JVM 위에서 돌아가므로 라이브러리를 사용할 수 있다. 이렇게 만든 Processor를 .jar 파일로 만들어야 하는데 이렇게 압축할 때 META-INF/services 안에 있는 Processor를 같이 압축해줘야 한다.(google의 auto-service를 사용하면 알아서 해준다.)
-
 ## 🔘 Poet 라이브러리
 
 > JAVA 소스 파일을 생성하기 위한 JAVA API
 
-✔️ Hello World 만들기
+✔️ **Hello World 만들기**
 
 ```java
 MethodSpec main = MethodSpec.methodBuilder("main")
@@ -179,4 +181,72 @@ public static void main(String[] args) throws IOException {
 
 ___
 
-## 🔘 Poet 라이브러리
+## 🔘 Lombock
+
+> 표준적으로 작성해야 할 코들르 개발자 대신 생성해주는 라이브러리
+
+- 컴파일 시점에 Annotation Processor를 사용하여 소스코드의 AST(abstract syntax tree)를 조작한다.
+
+✔️ **BUT**
+1. 공개된 API가 아닌 컴파일러 내부 클래스를 사용하여 기존 소스 코드를 조작한다.
+2. Eclipse의 경우 java agent를 사용하여 컴파일러 클래스까지 조작하여 사용. 해당 클래스들 역시 공개된 API가 아니므로 버전 호환성에 문제가 생길 수 있다.
+
+___ 
+
+##  Annotation Processor 실습
+
+✔️ **Factory 만들기**
+
+0. magic Annotation 생성
+1. AbstractProcessor를 상속하여 customProcessor를 생성
+2. process(Set<> annotations, RoundEnvironment roundEnv) 작성
+
+```java
+@Override
+public boolean process(
+    Set<? extends TypeElemnet> annotations, 
+    RoundEnvironment roundEnv ) {
+        roundEnv.getElementAnnotatedWith(Magic.class);
+         
+        for(Element element : elements) {
+            Name simpleName = element.getSimpleName();
+            if(element.getKind() != ElementKind.INTERFACE) {
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "ERROR");
+            } else {
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "name: " + simpleName);
+            }
+        }
+
+        TypeElement typeElement = (TypeElement)element;
+        ClassName className = ClassName.get(typeElement);
+
+        MethodSpec pullOut = MethodSpec.methodBuilder("pullOut")
+            .addModifiers(Modifier.PUBLIC);
+            .returns(String.class)
+            .addStatement("return $s", "Rabbits!")
+            .build();
+
+        TypeSpec MagicMoja = TypeSpec.classBuilder("MagicMoja")
+            .addModifiers(Modifier.PUBLIC)
+            .addSuperinterface(className)
+            .addMethod(pullOut)
+            .build();
+
+        Filter filter = processsingEnv.getFilter();
+        try {
+            JavaFile.builder(className.packageName(), magicMoja)
+                .build();
+                .writeTo(filter);
+        } catch(IOException e) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "ERROR");
+        }
+
+        return true;
+}
+```
+3. META-INF.services에 javax.annotation.processing.Processor에 만든 Processor의 풀패키지 경로를 입력(Processor를 등록)
+   - Processor가 만들어지지 않은 상태에서 빌드를 하기 때문에 빌드하고 작성해야함
+   - 아니면 auto-Service를 사용하자
+4. 다른 프로젝트에 만든 Processor의 의존성을 주입한다.
+5. 소스코드 경로를 추가해 준다.
+6. 
