@@ -1,7 +1,7 @@
 ---
 title: Spring Security
 author: Jiny
-date: 2021-01-09 13:09:00 +0800
+date: 2021-01-11 13:09:00 +0800
 categories: [Java, Spring]
 tags: [java, spring, security]
 toc: false
