@@ -10,7 +10,7 @@ toc: false
 # Java Thread
 ___
 
-## Thread LifeCycle
+## 💿 Thread LifeCycle
 
 ![image](https://miro.medium.com/max/700/1*Dfl8EQlWdIebwAh9UinLMA.jpeg)
 
@@ -32,7 +32,9 @@ ___
   - Thread.join with timeout
 - Terminated: run()이 끝나면 자원을 반납하고 종료
 
-## Thread 생성자
+___
+
+## 💿 Thread 생성자
 
 |함수|설명|
 |----|---|
@@ -40,7 +42,9 @@ ___
 |Thread(Runnable r)|인터페이스 객체|
 |Thread(Runnable r, String s)|인터페이스 객체와 스레드 이름|
 
-## Thread Method
+___
+
+## 💿 Thread Method
 
 |함수|설명|
 |----|---|
@@ -57,7 +61,9 @@ ___
 |void resume()|일시 정지된 스레드를 다시 시작.|
 |void yield()|다른 스레드에게 실행 상태를 양보하고 <br/>자신은 준비 상태로|
 
-## Thread 생성
+___
+
+## 💿 Thread 생성
  
 ### extend Thread
 ```java
@@ -101,8 +107,10 @@ main end.
 - 특징
   - test.start() 실행 시 test객체의 run 메소드가 수행
   - 쓰레드가 종료되기 전에 main 메소드가 종료
+
+___
  
-### Join
+### 💿 Join
 
 > 쓰레드가 종료될 때까지 기다리게 하는 메서드
 
@@ -140,7 +148,7 @@ main end.
 - 특징
   - 모든 쓰레드가 종료된 후에 main 메소드를 종료
   
-### Runnable
+### 💿 Runnable
 
 > 흔히 사용되는 방법
 
@@ -181,7 +189,9 @@ public class Test implements Runnable {
 - 특징
   - Thread t = new Thread(new Test(i));
 
-## Thread 우선순위
+___
+
+## 💿 Thread 우선순위
 
 > 우선순위라는 속성(멤버변수)의 값에 따라 쓰레드가 얻는 실행시간이 달라짐
 
@@ -231,7 +241,9 @@ class B extends Thread {
 
 우선순위가 높은 th2의 실행시간이 th1에 비해 상당히 늘어난다.
 
-## Main 쓰레드
+___
+
+## 💿 Main 쓰레드
 
 > 메인이 수행하는 스레드 public static void main(String[] args)
 

@@ -10,21 +10,24 @@ toc: false
 # Thread Process
 ___
 
-## Definition
+## 💿 Definition
 
 - **프로그램**: 파일이 저장 장치에 저장되어 있지만 메모리에는 올라가 있지 않은 정적인 상태를 말한다.
 - **프로세스**: 운영체제로부터 자원을 할당받은 작업의 단위.
 - **스레드**: 프로세스가 할당받은 자원을 이용하는 실행 흐름의 단위.
 
+___
 
-## Thread & Process
+## 💿 Thread & Process
 
 ![image](https://media.vlpt.us/images/raejoonee/post/6f274681-dfa7-45eb-9121-2cc9f4b972a5/102.png)
 
 Thread는 Process와 다르게 Thread 간 Memory를 공유하며 작동
 - 즉 Thread는 Process의 자원을 공유하면서 Process 실행 흐름의 일부가 된다.
 
-## Thread
+___
+
+## 💿 Thread
 
 ![image](https://media.vlpt.us/images/raejoonee/post/b7939911-f3e8-48ac-abb8-63d8a17d0444/103.png)
 
@@ -38,7 +41,9 @@ Thread는 Process와 다르게 Thread 간 Memory를 공유하며 작동
 
 > 앞서 언급한 대로 Thread의 경우 동기화, 간섭이 가장 큰 단점으로 작용
 
-## Process
+___
+
+## 💿 Process
 
 **프로세스도 공유가 됨**
 
