@@ -246,3 +246,7 @@ public class App {
 
 - 단지 특정 기능을 처리하는 내부 method일 뿐인데도, 외부에 공개되는 public method로 만들어야 하기 때문
 - 코드의 중복을 피하고 interface에 대한 캡슐화를 유지
+
+## ServiceLoader
+
+> 인터페이스의 구현체를 주입받은 jar에 따라 선택할 수 있는 클래스
