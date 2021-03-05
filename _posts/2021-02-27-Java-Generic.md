@@ -1,7 +1,7 @@
 ---
 title: Java Generic
 author: Jiny
-date: 2021-01-22 22:40:00 +0800
+date: 2021-01-27 22:40:00 +0800
 categories: [Java, Jasic]
 tags: [java, basic]
 toc: false
