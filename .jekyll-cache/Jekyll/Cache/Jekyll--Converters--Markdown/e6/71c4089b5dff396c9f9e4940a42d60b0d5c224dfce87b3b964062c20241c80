@@ -1,0 +1,89 @@
+I"<h1 id="java-reflection">Java Reflection</h1>
+<hr />
+
+<h2 id="리플렉션의-시작은-class">리플렉션의 시작은 Class<T></T></h2>
+
+<h2 id="class에-접근하는-방법">Class<T>에 접근하는 방법</T></h2>
+
+<ul>
+  <li>모든 클래스를 로딩한 다음 Class<T>의 인스턴스가 생긴다.(static 이므로) "Type.class"로 접근할 수 있다.</T></li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DemoSpringDiApplication</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ClassNotFoundException</span> <span class="o">{</span>
+        <span class="nc">Class</span><span class="o">&lt;</span><span class="nc">Book</span><span class="o">&gt;</span> <span class="n">bookClass</span> <span class="o">=</span> <span class="nc">Book</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">bookClass</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+
+        <span class="nc">Book</span> <span class="n">book</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Book</span><span class="o">();</span>
+        <span class="nc">Class</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="nc">Book</span><span class="o">&gt;</span> <span class="n">aClass</span> <span class="o">=</span> <span class="n">book</span><span class="o">.</span><span class="na">getClass</span><span class="o">();</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">aClass</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+
+        <span class="nc">Class</span><span class="o">&lt;?&gt;</span> <span class="n">bClass</span> <span class="o">=</span> <span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.example.demospringdi.Book"</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">bClass</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<ul>
+  <li>모든 인스턴스는 getClass() 메서드를 가지고 있다. “인스턴스.getClass()”로 접근할 수 있다.</li>
+  <li>클래스를 문자열로 읽어오는 방법
+    <ul>
+      <li>Class.forName(“FQCN”)</li>
+      <li>ClassPath에 해당 클래스가 없다면 ClassNotFoundException이 발생한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="class를-통해-할-수-있는-것">Class<T>를 통해 할 수 있는 것</T></h2>
+
+<ul>
+  <li>필드(목록) 가져오기</li>
+  <li>메서드(목록) 가져오기</li>
+  <li>상위 클래스 가져오기</li>
+  <li>인터페이스(목록) 가져오기</li>
+  <li>애노테이션 가져오기</li>
+  <li>생성자 가져오기</li>
+  <li>…</li>
+</ul>
+
+<h2 id="annotation-과-reflection">Annotation 과 Reflection</h2>
+
+<p><strong>Annotation</strong></p>
+<ul>
+  <li>기본적으로 주석과 같은 취급: 소스와 클래스 까지는 남음
+    <ul>
+      <li>로딩 했을 때 메모리 상에 남지 않음(바이트 코드에 남지 않는다.)</li>
+      <li>따라서 Retention을 사용</li>
+    </ul>
+  </li>
+  <li>@Target으로 Annotation 사용 범위를 지정 가능</li>
+  <li></li>
+</ul>
+
+<p><strong>중요 애노테이션</strong></p>
+<ul>
+  <li>@Retention: 해당 애노테이션을 언제까지 유지할 것인가? 소스 클래스 런타임</li>
+  <li>@Inherit: 해당 애노테이션을 하위 클래스까지 전달 할 것인가</li>
+  <li>@Target: 어디에 사용할 수 있는가?</li>
+</ul>
+
+<p><strong>Reflection</strong></p>
+<ul>
+  <li>getAnnotations(): 상속받은 (@Inherit) 애노테이션까지 조회</li>
+  <li>getDeclaredAnnotations(): 자기 자신에만 붙어있는 애노테이션 조회</li>
+</ul>
+:ET

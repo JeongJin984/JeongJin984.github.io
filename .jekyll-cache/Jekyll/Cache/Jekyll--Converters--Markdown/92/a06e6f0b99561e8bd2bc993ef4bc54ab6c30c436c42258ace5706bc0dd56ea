@@ -1,0 +1,467 @@
+I"7N<h1 id="spring-security-2">Spring Security-2</h1>
+<hr />
+
+<h2 id="delegatingfilterproxy">DelegatingFilterProxy</h2>
+
+<p><img src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&amp;fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fc4Ruyp%2FbtqIBZqOTEb%2FQ7KNDDJk5rKakxgbAXoRE1%2Fimg.png" alt="image" /></p>
+
+<blockquote>
+  <p>Spring Security가 모든 App 요청을 감싸게 해서 보안이 적용되게 하는 서블릿 필터</p>
+</blockquote>
+
+<ul>
+  <li>서블릿 필터는 스프링에서 정의된 빈을 주입해서 사용할 수 없음</li>
+  <li>특정한 이름을 가진 스프링 빈을 찾아 그 빈에게 요청을 위임
+    <ul>
+      <li>springSecurityFilterChain 이름으로 생성된 빈을 ApplicationContext에서 찾아 요청을 위임</li>
+      <li>실제 보안처리는 하지 않음</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nt">&lt;filter&gt;</span>
+    <span class="nt">&lt;filter-name&gt;</span>springSecurityFilterChain<span class="nt">&lt;/filter-name&gt;</span>
+    <span class="nt">&lt;filter-class&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="nt">&lt;/filter-class&gt;</span>
+<span class="nt">&lt;/filter&gt;</span>
+<span class="nt">&lt;filter-mapping&gt;</span>
+    <span class="nt">&lt;filter-name&gt;</span>springSecurityFilterChain<span class="nt">&lt;/filter-name&gt;</span>
+    <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+<span class="nt">&lt;/filter-mapping&gt;</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>이런식으로 필터를 적용하여 모든 요청을 Spring Security가 감싸서 처리할 수 있다.</p>
+<ul>
+  <li>DelegatingFilterProxy는 filtername으로 명시된 Spring-Context에서 빈으로 등록된 SpringFilterChain에게 실제 인증처리를 위임하기만 함</li>
+  <li>springSecurityFilerChain은 Filter 인터페이스를 구현한 여러종류의 Filter들을 Filer-List 객체에 가지고 있음</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>필터</th>
+      <th>하는 일</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SecurityContextPersistenceFilter</td>
+      <td>SecurityContextRepository에서 SecurityContext를 로드하고 저장하는 <br /> 일을 담당함</td>
+    </tr>
+    <tr>
+      <td>LogoutFilter</td>
+      <td>로그아웃 URL로 지정된 가상URL에 대한 요청을 감시하고 매칭되는 <br /> 요청이 있으면 사용자를 로그아웃시킴</td>
+    </tr>
+    <tr>
+      <td>UsernamePasswordAuthenticationFilter</td>
+      <td>사용자명과 비밀번호로 이뤄진 폼기반 인증에 사용하는 가상 URL <br />요청을 감시하고 요청이 있으면 사용자의 인증을 진행함</td>
+    </tr>
+    <tr>
+      <td>DefaultLoginPageGeneratingFilter</td>
+      <td>폼기반 또는 OpenID 기반 인증에 사용하는 가상URL에 대한 요청을 <br />감시하고 로그인 폼 기능을 수행하는데 필요한 HTML을 생성함</td>
+    </tr>
+    <tr>
+      <td>BasicAuthenticationFilter</td>
+      <td>HTTP 기본 인증 헤더를 감시하고 이를 처리함</td>
+    </tr>
+    <tr>
+      <td>RequestCacheAwareFilter</td>
+      <td>로그인 성공 이후 인증 요청에 의해 가로채어진 사용자의 원래 <br />요청을 재구성하는데 사용됨 HttpServletRequest를<br /> HttpServletRequestWrapper를 상속하는 하위 클래스<br />(SecurityContextHolderAwareRequestWrapper)로 감싸서 필터 <br />체인상 하단에 위치한 요청 프로세서에 추가 컨텍스트를 제공함</td>
+    </tr>
+    <tr>
+      <td>AnonymousAuthenticationFilter</td>
+      <td>이 필터가 호출되는 시점까지 사용자가 아직 인증을 받지 못했다면<br /> 요청 관련 인증 토큰에서 사용자가 익명 사용자로 나타나게 됨</td>
+    </tr>
+    <tr>
+      <td>SessionManagementFilter</td>
+      <td>인증된 주체를 바탕으로 세션 트래킹을 처리해 단일 주체와 관련한<br /> 모든 세션들이 트래킹되도록 도움</td>
+    </tr>
+    <tr>
+      <td>ExceptionTranslationFilter</td>
+      <td>이 필터는 보호된 요청을 처리하는 동안 발생할 수 있는 기대한<br /> 예외의 기본 라우팅과 위임을 처리함</td>
+    </tr>
+    <tr>
+      <td>FilterSecurityInterceptor</td>
+      <td>이 필터는 권한부여와 관련한 결정을 AccessDecisionManager에게<br /> 위임해 권한부여 결정 및 접근 제어 결정을 쉽게 만들어 줌</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="filter-초기화-와-다중-설정-클래스">Filter 초기화 와 다중 설정 클래스</h2>
+
+<p><img src="https://docs.spring.io/spring-security/site/docs/current/reference/html5/images/servlet/architecture/multi-securityfilterchain.png" alt="image" /></p>
+
+<ul>
+  <li>각각의 Config 파일 별로 다른 Security Filter가 생성되고 이 Filer는 antMatch 메서드(Request Matcher 설정)로 각각 별도의 URL에 매핑됨</li>
+  <li>모든 필터들은 SecurityFilters라는 리스트에 담기게 되고 이는 FilterChainProxy가 가지고 있음
+    <ul>
+      <li>즉 URL을 FilterChainProxy가 받아서 리스트에서 어떤 SecurityFilter를 사용할지를 결정</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="config-클래스-등록">Config 클래스 등록</h2>
+
+<ul>
+  <li>AbstractConfiguredSecurityBuilder
+    <ul>
+      <li>configure(): 각 config class를 불러와서 config 작업을 수행
+        <ul>
+          <li>SecurityConfigurer(I)로 저장(수많은 Configurer들이 상속)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>즉 webSecurityConfigurerAdapter가 annotation에 의해 Config로 등록되는 과정 속에서 http(AbstractConfiguredSecurityBuilder)가 config와 customConfigurerAjax에 의해 초기화 되면서 config 등록</p>
+</blockquote>
+
+<h2 id="filter-process">Filter Process</h2>
+
+<ol>
+  <li>WebSecurity Class: FilterChainProxy를 Bean으로 등록(new FilterChainProxy(securityChains))
+    <ul>
+      <li>securityChains 안에 필터와 requestMatcher가 있음</li>
+    </ul>
+  </li>
+  <li>초기화가 끝나고 Request가 들어오면 FilterProxy에서 사용할 Filter를 고름(getFilters())</li>
+</ol>
+
+<h2 id="authentication">Authentication</h2>
+
+<blockquote>
+  <p>누구인지를 증명하는 것</p>
+</blockquote>
+
+<ul>
+  <li>사용자의 인증 정보를 저장하는 토큰 개념</li>
+  <li>인증 시 id 와 password를 담고 인증 검증을 위해 전달되어 사용</li>
+  <li>인증 후 최종 인증 결과(user 객체, 권한 정보)를 담고 Security Context에 저장되어 전역적으로 참조가 가능
+    <ul>
+      <li>Authentication authentication = SecurityContextHolder.getContext().getAuthentication()</li>
+    </ul>
+  </li>
+  <li>구조
+    <ul>
+      <li>principal: 사용자 id 혹은 User 객체 저장</li>
+      <li>credential: 사용자 비밀번호</li>
+      <li>authorities: 인증된 사용자의 권한 목록</li>
+      <li>details: 인증 부가 정보</li>
+      <li>Authenticated: 인증 여부</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="authentication-process">Authentication Process</h2>
+
+<p><img src="https://miro.medium.com/max/1250/1*oVUa7n_m5LkLRzcE-jN_EQ.png" alt="image" /></p>
+
+<ol>
+  <li>login 정보(id, password)가 전달 됨</li>
+  <li>Filter가 Request를 가로채어 Authentication이라는 객체를 생성
+    <ul>
+      <li>FormLogIn이면 UsernamePasswordAuthenticationToken이 생성됨</li>
+      <li>Manager에 전달</li>
+    </ul>
+  </li>
+  <li>AuthenticationManager(I)가 ProviderManager(C)를 통해 AuthenticationProvider 목록 중에서 인증 처리 요건에 맞는 AuthenticationProvider를 찾아 인증처리를 위임
+    <ul>
+      <li>부모 ProviderManager를 설정하여 AuthenticationProvider를 계속 탐색 할 수 있음.</li>
+      <li>OAuth일 경우 parent 속성을 통해 부모격의 Provider에서 OAuth 인증 Provider를 사용
+        <ul>
+          <li>초기화 과정에서 2개의 ProviderManager를 만드는데 하나가 부모용 하나가 Default</li>
+          <li>Provider 찾다가 Default에 없으면 부모로 가서 찾음</li>
+          <li>Token의 타입을 통해 Provider를 찾음</li>
+        </ul>
+      </li>
+      <li>AuthenticationManagerBuilder를 통해 생성됨(Provider가 생성됨)</li>
+    </ul>
+  </li>
+  <li>AuthenticationProvider(I)를 상속한 무슨무슨AuthenticationProvider(C)가 인증처리를 수행
+    <ul>
+      <li>provider.authenticate(authentication)
+        <ul>
+          <li>ID 검증: UserDetailsService에서 수행(UserDetails 반환)</li>
+          <li>password 검증: 실패 시 BadCredentialException</li>
+          <li>추가 검증</li>
+        </ul>
+      </li>
+      <li>supports: 인증을 처리할 수 있는 Provider인지 확인</li>
+    </ul>
+  </li>
+  <li>UserDetailsService에서 실제 인증 처리 역할
+    <ul>
+      <li>유저 유효성 체크</li>
+    </ul>
+  </li>
+  <li>Repository에서 유저 객체 조회, UserDetails 타입으로  반환</li>
+  <li>UserDetailsService의 UserDetails로 Provider가 Authentication 객체를 만듬(권한 목록이 채워지는등의 정보가 달라짐)
+    <ul>
+      <li>최종적으로 필터에게 전달</li>
+    </ul>
+  </li>
+  <li>SecurityContextHolder의 SecurityContext의 Authentication 객체에 저장됨(필터에서 처리함)</li>
+</ol>
+
+<h2 id="securitycontext-security-context-holder">SecurityContext, Security Context Holder</h2>
+
+<blockquote>
+  <p>SecurityContext: Authentication 객체가 저장되는 Context</p>
+</blockquote>
+
+<ul>
+  <li>ThreadLocal에 저장되어 아무곳에서나 참조가 가능하도록 설계
+    <ul>
+      <li>ThreadLocal: 각 Thread에 할당되는 메모리(공유 불가)</li>
+    </ul>
+  </li>
+  <li>
+    <p>인증이 완료되면 HttpSession에 저장되어 App 전반에 걸쳐 전역적인 참조가 가능</p>
+  </li>
+  <li>Security 객체 저장 방식(SecurityContextHolder)
+    <ul>
+      <li>MODE_THREADLOCAL: thread당 SecurityContext 객체를 할당, 기본값</li>
+      <li>MODE_INHERITABLETHREADLOCAL: 메인 Thread 와 자식 Thread에 관하여 동일한 SecurityContext 유지</li>
+      <li>MODE_GLOBAL: 응용 프로그램에서 단 하나의 SecurityContext를 저장</li>
+    </ul>
+  </li>
+  <li>SecurityContextHolder.cleanContext(): SecurityContext 기존 정보 초기화</li>
+</ul>
+
+<h2 id="security-process">Security Process</h2>
+
+<ol>
+  <li>Login 요청이 들어오면 Server가 Thread를 생성
+    <ul>
+      <li>ThreadLocal이라는 저장소 생성</li>
+    </ul>
+  </li>
+  <li>인증처리(Filter): Authentication 객체 생성</li>
+  <li>인증 성공 시 SecurityContext에 Authentication 객체 저장</li>
+  <li>HttpSession에 저장
+    <ul>
+      <li>Authentication authentication = SecurityContextHolder.getContext().getAuthentication();</li>
+      <li>SecurityContext sc = (SecurityContext)session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);</li>
+      <li>Authentication authentication = context.getAuthentication();</li>
+      <li>2가지 방법으로 authentication 객체 획득 가능</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="securitycontextpersistencefilter">SecurityContextPersistenceFilter</h2>
+
+<p><strong>SecurityContext 객체의 생성, 저장, 조회</strong></p>
+
+<ul>
+  <li>익명 사용자
+    <ul>
+      <li>새로운 SecurityContext를 생성하여 SecurityContextHolder에 저장(SecurityContextPersistenceFilter가 수행)</li>
+      <li>AnonymousAuthenticationFilter에서 AnonymousAuthentificationToken를 SecurityContext에 저장</li>
+    </ul>
+  </li>
+  <li>인증 시
+    <ul>
+      <li>새로운 SecurityContext를 생성하여 SecurityContextHolder에 저장(SecurityContextPersistenceFilter가 수행)</li>
+      <li>UsernamePasswordAuthentificationFilter에서 인증 성공 후 해당 토큰 SecurityContext에 저장</li>
+      <li>인증이 최종 완료되면 Session에 SecurityContext 저장</li>
+    </ul>
+  </li>
+  <li>인증 후
+    <ul>
+      <li>Session에서 SecurityContext 꺼내서 SecurityContextHolder에 저장(SecurityContextPersistenceFilter가 수행)</li>
+      <li>SecurityContext 안에 Authentication 객체가 존재하면 계속 인증을 유지</li>
+    </ul>
+  </li>
+  <li>최종 응답 시 공통
+    <ul>
+      <li>SecurityContextHolder.clearContext();</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="securitycontextpersistencefilter-process">SecurityContextPersistenceFilter Process</h2>
+
+<ol>
+  <li>FilterChain안의 SCPF가 요청을 받음</li>
+  <li>HttpSecurityContextRepository가 요청을 전달 받음</li>
+  <li>인증 상태 확인</li>
+  <li>새로운 SecurityContext 생성</li>
+  <li>chain.doFilter를 통해 인증 필터(AuthFilter)를 통과하게 됨(인증 작업)</li>
+  <li>인증 후 SecurityContext에 Authentication 객체를 저장</li>
+  <li>Session에 SecurityContext 저장</li>
+  <li>SecurityContext를 holder에서 삭제</li>
+  <li>응답</li>
+</ol>
+
+<h2 id="authorization">Authorization</h2>
+
+<blockquote>
+  <p>무엇이 허가 되었는가</p>
+</blockquote>
+
+<ul>
+  <li>Spring Security가 지원하는 권한 계층
+    <ul>
+      <li>웹계층: URL 요청에 따른 메뉴 혹은 화면 단위의 레벨 보안</li>
+      <li>서비스 계층: 화면 단위가 아닌 메서드 같은 단위의 레벨 보안</li>
+      <li>도메인 계층: 객체 단위의 레벨 보안</li>
+    </ul>
+  </li>
+  <li>FilterSecurityInterceptor
+    <ul>
+      <li>마지막에 위치한 필터로서 인증된 사용자에 대하여 특정 요청의 승인/거부 여부를 최종적으로 결정</li>
+      <li>인증객체 없이 보호자원에 접근을 시도할 경우 AuthenticationException을 발생</li>
+      <li>인증 후 자원에 접근 가능한 권한이 존재하지 않을 경우 AccessDeniedException을 발생</li>
+      <li>권한 제어 방식 중 HTTP 자원의 보안을 처리하는 필터</li>
+      <li>권한 처리를 AccessDesicionManager에 위임</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="authorization-process">Authorization Process</h2>
+
+<ol>
+  <li>요청이 들어오면 FilterSecurityInterceptor가 인증 여부를 체크</li>
+  <li>SecurityMetaSource(C): 사용자가 요청한 자원에 필요한 권한 정보를 조회해서 전달</li>
+  <li>권한 정보가 존재할 시 AccessDecisionManager(C)로 전달
+    <ul>
+      <li>AccessDecisionVoter를 통해 심의 수행</li>
+      <li>최종 승인 or 거부</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="accessdecisionmanager">AccessDecisionManager</h2>
+
+<ul>
+  <li>인증정보, 요청정보, 권한정보를 통해 사용자의 자원접근을 허용할 것인지 거부할 것인지 최종 결정하는 주체</li>
+  <li>여러개의 Voter들로 부터 접근허용, 거부, 보류에 해당하는 각각의 값을 리턴받고 판단 및 결정</li>
+  <li>최종 접근 거부 시 예외 발생</li>
+</ul>
+
+<p><strong>접근 결정의 세가지 유형</strong></p>
+
+<ul>
+  <li>AffirmativeBased
+    <ul>
+      <li>여러개의 Voter 클래스 중 하나라도 접근 허가로 결론을 내면 허가로 판단한다.</li>
+    </ul>
+  </li>
+  <li>ConsensusBased
+    <ul>
+      <li>다수표(승인 및 거부)에 의해 최종 결정을 판단한다</li>
+      <li>동수일 경우 기본은 접근허기이나 allowIfEqualGrantedDeniedDecisions을 false로 설정할 경우 접근 거부로 결정됨</li>
+    </ul>
+  </li>
+  <li>UnanimouseBased
+    <ul>
+      <li>모든 Voter가 만장일치로 접근을 승인해야 하며 그렇지 않을 경우 접근을 거부</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>AccessDecisionVoter</strong></p>
+
+<ul>
+  <li>Voter가 권한 부여 과정에서 판단하는 자료
+    <ul>
+      <li>Authentication: 인증 정보(user)</li>
+      <li>FilterInvocation: 요청 정보(antMatcher(“/user”))</li>
+      <li>ConfigAttributes: 권한 정보(hasRole(“USER”))</li>
+    </ul>
+  </li>
+  <li>결정 방식
+    <ul>
+      <li>ACCESS_GRANTED: 접근 허용(1)</li>
+      <li>ACCESS_DENIED: 접근 거부(0)</li>
+      <li>ACCESS_ABSTAIN: 접근 보류(-1)
+        <ul>
+          <li>Voter가 해당 타입의 요청에 대해 결정을 내릴 수 없는 경우</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="accessdecisionmanager-process인가-처리">AccessDecisionManager Process(인가 처리)</h2>
+
+<ol>
+  <li>FilterSecurityInterceptor(C)가 AccessDecisionManager(I)에 인가 처리 위임
+    <ul>
+      <li>decide(authentication, object, configAttributes)</li>
+      <li>순서대로 Authentication(인증정보), FilterInvocation(요청정보), ConfigAttributes(권한정보)</li>
+    </ul>
+  </li>
+  <li>AccessDecisionManager(I)가 AccessDevisionvoter(I)를 통해 위의 3가지 정보를 이용하여 접근 결정
+    <ul>
+      <li>AccessDecisionManager(I) 구현체: AffirmativeBased, ConsensusBased, UnanimousBased</li>
+      <li>decide()를 통해 결정</li>
+      <li>voter(I)의 구현체: RoleVoter: supports()를 통해 return</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="인가-처리">인가 처리</h2>
+
+<ul>
+  <li>FilterSecurityInterceptor로 요청이 들어옴
+    <ul>
+      <li>FilterInvocation 생성 및 invoke(FilterInvocation) 실행</li>
+      <li>invoke 실행 중 부모 클래스(AbstractSecurityInterceptor)의 beforeInvocation() 실행(권한 목록 가져옴)
+        <ul>
+          <li>obtainSecurityMetadataSource() 실행 -&gt; ExpressionBasedFilterInvocationSecurityMetadataSource를 가지고 있으면 이것의 getAttributes를 통해 권한목록 가져옴
+            <ul>
+              <li>일치하는 것이 없으면 null을 return 하는데 이러면 따로 인증이나 인가 처리를 하지 않음</li>
+              <li>/admin/** 이 등록되어 있으면 제한된 사용자만 접속 허용 등록 안되 있는것들은 그냥 허용(return null)하겠다는 뜻</li>
+            </ul>
+          </li>
+          <li>AuthenticateIfRequired(): 인증 정보</li>
+          <li>attemptAuthorization() 실행: accessDecisionManager로 정보를 보내서 인가 여부 확인</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="메서드-방식-인가처리">메서드 방식 인가처리</h2>
+
+<ol>
+  <li>DefaultAdvisorAutoProxtCreator가 MethodSecurityMetadataSourceAdvisor를 통해 Bean을 검사한 후 해당 Bean의 Proxy 객체를 생성(초기화).
+    <ol>
+      <li>MethodSecurityMetadataSourcePointcut이 MSMSA의 MethodSecurityMetadataSource를 받아서 getAttrubutes를 통해 Bean 과 권한정보을 찾습니다.
+        <ul>
+          <li>찾은 Bean들의 정보를 이용해 Interceptor에 advisor(MethodSecurityInterceptor)를 등록합니다.</li>
+          <li>권한 정보는 attributeCache에다가 저장</li>
+          <li>즉 annotation이 달린 메서드는 Proxy 생성 대상</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>생성된 Proxy 객체 안에 MSMSA도 담김 (MSMSA 안에 PointCut이랑 Interceptor 다있음)</li>
+  <li>요청이 들어오면 해당 객체의 Proxy로 넘어가서 MethodSecurityInterceptor로 요청을 넘기면서 인가가 시작됨
+    <ul>
+      <li>DelegatingMethodSecurityMetadataSource가 가진 Prepost…나 Secured… 를 통해(getAttributes할때 캐쉬에 담긴 Attributes를 가져옴) 인가 처리</li>
+      <li>custom하게 metadatasource 추가 가능</li>
+    </ul>
+  </li>
+</ol>
+
+<ul>
+  <li>PrePostAnnotationSecurityMetadataSource:  extracts metadata from the @PreFilter and @PreAuthorize annotations placed on a method.
+    <ul>
+      <li>이것의 getAttributes는 attr을 return 하는데 여기에 표현식 등이 담김</li>
+    </ul>
+  </li>
+  <li>SecuredAnnotationSecurityMetadataSource: 똑같음 얘는 extractAttributes</li>
+</ul>
+
+:ET

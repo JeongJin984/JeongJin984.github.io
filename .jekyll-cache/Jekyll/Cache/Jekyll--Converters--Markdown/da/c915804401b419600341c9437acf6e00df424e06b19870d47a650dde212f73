@@ -1,0 +1,39 @@
+I"<h1 id="pytorch"><strong>PyTorch</strong></h1>
+<hr />
+
+<h2 id="torch">Torch</h2>
+<blockquote>
+  <p>Lura 기반의 딥러닝 프레임워크로 Facebook, Twitter, Google의 개발자들이 개발</p>
+</blockquote>
+
+<ul>
+  <li>알고리즘 모듈화, 데이터 전처리, 시각화 유틸리티등 편이성이 있으나 사용자 커뮤니티문서화 부족</li>
+</ul>
+
+<h2 id="pytorch-1">Pytorch</h2>
+<blockquote>
+  <p>Torch의 직관성을 계승하고, 파이썬의 인터프리팅 특성에 맞게 즉각적으로 코드가 실행 되면서도 유연성과 빠른속도 제공</p>
+</blockquote>
+
+<h2 id="특징">특징</h2>
+<ul>
+  <li>Define-by-Run
+    <ul>
+      <li>데이터를 계산하는 과정에서 동적으로 계싼 그래프가 구성됨</li>
+    </ul>
+  </li>
+  <li>Python-first &amp; Pytho-support
+    <ul>
+      <li>Python 문법을 잘 활용한 간결하고 읽기 쉬운 코드</li>
+      <li>Python 라이브러리(Numpy, Scipy, Cython)와의 높은 호환성</li>
+    </ul>
+  </li>
+  <li>Distributed Training
+    <ul>
+      <li>대용량의 입력 데이터 처리를 위한 다중 GPU 기반 병렬 학습 지원</li>
+    </ul>
+  </li>
+  <li>Automatic Differentiation(AutoGrad)</li>
+  <li>역방향 자동 미분 기능을 지원해 손쉽게 인공신경망 구현 가능</li>
+</ul>
+:ET

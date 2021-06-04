@@ -1,0 +1,396 @@
+I"�\<h1 id="java-annotation">Java Annotation</h1>
+<hr />
+
+<h2 id="-annotation">🔘 Annotation</h2>
+
+<ol>
+  <li>어노테이션의 역할도 주석과 크게 다르지 않는다.</li>
+  <li>일반주석과 큰 차이점은 코드를 작성할 수 있다는 것이 다르다.</li>
+  <li>코드를 작성할 수 있다는 뜻은 어노테이션으로 뭔가를 할 수 있다는 뜻이 된다.</li>
+  <li>어노테이션도 enum과 마찬가지로 1.5에 등장했다고 한다.</li>
+</ol>
+
+<hr />
+
+<h2 id="-annotation-종류">🔘 Annotation 종류</h2>
+
+<ol>
+  <li>@Retention
+    <ul>
+      <li>자바 컴파일러가 어노테이션을 다루는 방법을 기술하며, 특정 시점까지 영향을 미치는지를 결정</li>
+      <li>RetentionPolicy.SOURCE: 컴파일 전까지만 유효(컴파일시 사라짐)</li>
+      <li>RetentionPolicy.CLASS: 컴파일러가 클래스를 참조할 때까지 유효(바이트코드에는 존재)</li>
+      <li>RetentionPolicy.RUNTIME: 컴파일 이휴에도 JVM에 의해 계속 참조가 가능(리플렉션 사용 가능)</li>
+    </ul>
+  </li>
+  <li>Target
+    <ul>
+      <li>어노테이션이 적용될 위치를 선택</li>
+      <li>ElementType.PACKAGE: 패키지에 선언</li>
+      <li>ElementType.TYPE: 타입 선언</li>
+      <li>ElementType.ANNOTAION_TYPE: 어노테이션 타입 선언</li>
+      <li>ElementType.CONSTRUCTOR: 생성자 선언</li>
+      <li>ElementType.FIELD: 멤버 변수 선언</li>
+      <li>ElementType.LOCAL_VARIBALE: 지역변수 선언</li>
+      <li>ElementType.METHOD: 메서드 선언</li>
+      <li>ElementType.PARAMETER: 전달인자 선언</li>
+      <li>ElementType.TYPE_PARAMETER: 전달인자 타입 선언</li>
+      <li>ElementType.TYPE_USE: 타입 선언</li>
+    </ul>
+  </li>
+  <li>Documented
+    <ul>
+      <li>해당 Annotation을 JavaDoc에 포함시킵니다.</li>
+    </ul>
+  </li>
+  <li>Inherited
+    <ul>
+      <li>Annotaion 상속을 가능하게 합니다.</li>
+    </ul>
+  </li>
+  <li>@Repeatable
+    <ul>
+      <li>Java8 부터 지원하며 연속적으로 어노테이션을 선언할 수 있게 해줍니다.</li>
+    </ul>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="-annotation-정의하기">🔘 Annotation 정의하기</h2>
+
+<p>✔️ <strong>정수 값 주입하기</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td> --><td class="rouge-code"><pre><span class="nd">@Target</span><span class="o">(</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">)</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">InsertIntData</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="nf">data</span><span class="o">()</span> <span class="k">default</span> <span class="mi">0</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td> --><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AnnotationExam01</span> <span class="o">{</span>
+    <span class="nd">@InsertIntData</span><span class="o">(</span><span class="n">data</span> <span class="o">=</span> <span class="mi">30</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">myAge</span><span class="o">;</span>
+
+    <span class="nd">@InsertIntData</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">defaultAge</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AnnotationExam01</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">myAge</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">defaultAge</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getMyAge</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">myAge</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getDefaultAge</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">defaultAge</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>myAge에 어노테이션에서는 30으로 값을 주입합니다.</li>
+  <li>defaultAge 에서는 값이 없는데 이 경우 어노테이션에서 정한 기본 값인 0으로 값이 주입이 됩니다.</li>
+  <li>생성자의 경우 값이 없을 경우 -1을 기본으로 저장합니다.</li>
+</ul>
+
+<hr />
+
+<h2 id="-annotation-processor">🔘 Annotation Processor</h2>
+
+<blockquote>
+  <p>Annotation Processor를 이용하여 컴파일 단계에서 소스를 조작</p>
+</blockquote>
+
+<ul>
+  <li>Annotation Processor가 컴파일 단계에서 모든 소스를 조작할 수 있는 것은 아니며, 새로 작성되는 파일에만 소스를 조작할 수 있고 기존에 있던 파일들은 건드릴 수 없다고 한다.</li>
+  <li>Lombok은 된다고 한다.</li>
+</ul>
+
+<hr />
+
+<h2 id="-annotation-processsor-동작">🔘 Annotation Processsor 동작</h2>
+
+<p>Annotation Processor는 여러번 반복해서 수행된다.(라운드에 기초하여)
+각 라운드는 컴파일러가 어노테이션을 검색하고, 해당 어노테이션에 맞는 Processor를 선택하는 것 부터 시작된다.</p>
+
+<blockquote>
+  <p>If any files are generated during this process, another round is started with the generated files as its input. This process continues until no new files are generated during the processing stage.</p>
+</blockquote>
+
+<p>Annotation Processor 또한 JVM 위에서 돌아가므로 라이브러리를 사용할 수 있다. 이렇게 만든 Processor를 .jar 파일로 만들어야 하는데 이렇게 압축할 때 META-INF/services 안에 있는 Processor를 같이 압축해줘야 한다.(google의 auto-service를 사용하면 알아서 해준다.)</p>
+
+<hr />
+
+<h2 id="-annotation-processsor-사용">🔘 Annotation Processsor 사용</h2>
+
+<p>모든 프로세서들은 AbstractProcessor를 상속받아야 한다.</p>
+
+<p>✔️ 추상메서드 process()</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td> --><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">boolean</span> <span class="nf">process</span><span class="o">(</span>
+ <span class="nc">Set</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="nc">TypeElement</span><span class="o">&gt;</span> <span class="n">annotations</span><span class="o">,</span> <span class="nc">RoundEnvironment</span> <span class="n">roundEnv</span>
+<span class="o">);</span>
+
+<span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">init</span><span class="o">(</span><span class="nc">ProcessingEnvironment</span> <span class="n">processingEnv</span><span class="o">)</span>
+
+<span class="kd">public</span> <span class="nc">SourceVersion</span> <span class="nf">getSupportedSourceVersion</span><span class="o">()</span>
+
+<span class="kd">public</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getSupportedAnnotationTypes</span><span class="o">()</span>
+
+<span class="kd">public</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">getSupportedOptions</span><span class="o">()</span>
+
+<span class="kd">public</span> <span class="nc">Iterable</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="nc">Completion</span><span class="o">&gt;</span> <span class="nf">getCompletions</span><span class="o">(...)</span>
+
+<span class="kd">protected</span> <span class="kd">synchronized</span> <span class="kt">boolean</span> <span class="nf">isInitialized</span><span class="o">()</span>
+
+<span class="kd">private</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="nf">arrayToSet</span><span class="o">(...)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>process(): 각 프로세서의 main 메서드와 같은 역할 이 메서드에서 원하는 동작을 코드로 작성</li>
+  <li>getSupportedAnnotationTypes(): 처리할 Annotation을 명시 이 메서드는 Annotation을 대체할 수 있다.</li>
+  <li>getSupportedSourceVersion(): 특정 자바버전을 명시하는데 사용할 수 있으며 Annotation을 대체 할 수 있다.
+    <ul>
+      <li>Annotation에서는 SourceVersion.latestSupported()를 사용하지 못하고 특정 버전을 명시해줘야 한다는 점이 다르다.</li>
+    </ul>
+  </li>
+  <li>init(ProcessingEnvironment processingEnvironment): 모든 Annotation Processor는 기본 생성자를 가져야 한다. 대신 init 메서드를 사용할 수 있는데 processingEnvironment에서 Util을 제공한다.
+    <ol>
+      <li>Types typeUtils = processingEnvironment.getTypeUtils();</li>
+      <li>Elements elementUtils = processingEnvironment.getElementUtils();</li>
+      <li>Filer filer = processingEnvironment.getFiler();</li>
+      <li>Messager messager = processingEnvironment.getMessager();</li>
+    </ol>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="-poet-라이브러리">🔘 Poet 라이브러리</h2>
+
+<blockquote>
+  <p>JAVA 소스 파일을 생성하기 위한 JAVA API</p>
+</blockquote>
+
+<p>✔️ <strong>Hello World 만들기</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td> --><td class="rouge-code"><pre><span class="nc">MethodSpec</span> <span class="n">main</span> <span class="o">=</span> <span class="nc">MethodSpec</span><span class="o">.</span><span class="na">methodBuilder</span><span class="o">(</span><span class="s">"main"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">addModifiers</span><span class="o">(</span><span class="nc">Modifier</span><span class="o">.</span><span class="na">PUBLIC</span><span class="o">,</span> <span class="nc">Modifier</span><span class="o">.</span><span class="na">STATIC</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">returns</span><span class="o">(</span><span class="kt">void</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">addParameter</span><span class="o">(</span><span class="nc">String</span><span class="o">[].</span><span class="na">class</span><span class="o">,</span> <span class="s">"args"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">addStatement</span><span class="o">(</span><span class="s">"$T.out.println($S)"</span><span class="o">,</span> <span class="nc">System</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"Hello, JavaPoet!"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+<span class="nc">TypeSpec</span> <span class="n">helloWorld</span> <span class="o">=</span> <span class="nc">TypeSpec</span><span class="o">.</span><span class="na">classBuilder</span><span class="o">(</span><span class="s">"HelloWorld"</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">addModifiers</span><span class="o">(</span><span class="nc">Modifier</span><span class="o">.</span><span class="na">PUBLIC</span><span class="o">,</span> <span class="nc">Modifier</span><span class="o">.</span><span class="na">FINAL</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="n">main</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+<span class="nc">JavaFile</span> <span class="n">javaFile</span> <span class="o">=</span> <span class="nc">JavaFile</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="s">"com.example.helloworld"</span><span class="o">,</span> <span class="n">helloWorld</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+<span class="n">javaFile</span><span class="o">.</span><span class="na">writeTo</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td> --><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+   <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="s">"Hello World!"</span> <span class="o">);</span>
+   <span class="nc">HelloWorldPoet</span> <span class="n">poet</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HelloWorldPoet</span><span class="o">();</span>
+   <span class="n">poet</span><span class="o">.</span><span class="na">generatedHelloWorld</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>writeTo(): 입력된 PATH에 파일이 생성됨()</li>
+</ul>
+
+<hr />
+
+<h2 id="-lombock">🔘 Lombock</h2>
+
+<blockquote>
+  <p>표준적으로 작성해야 할 코들르 개발자 대신 생성해주는 라이브러리</p>
+</blockquote>
+
+<ul>
+  <li>컴파일 시점에 Annotation Processor를 사용하여 소스코드의 AST(abstract syntax tree)를 조작한다.</li>
+</ul>
+
+<p>✔️ <strong>BUT</strong></p>
+<ol>
+  <li>공개된 API가 아닌 컴파일러 내부 클래스를 사용하여 기존 소스 코드를 조작한다.</li>
+  <li>Eclipse의 경우 java agent를 사용하여 컴파일러 클래스까지 조작하여 사용. 해당 클래스들 역시 공개된 API가 아니므로 버전 호환성에 문제가 생길 수 있다.</li>
+</ol>
+
+<hr />
+
+<h2 id="annotation-processor-실습">Annotation Processor 실습</h2>
+
+<p>✔️ <strong>Factory 만들기</strong></p>
+
+<ol>
+  <li>magic Annotation 생성</li>
+  <li>AbstractProcessor를 상속하여 customProcessor를 생성</li>
+  <li>process(Set&lt;&gt; annotations, RoundEnvironment roundEnv) 작성</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><!-- <td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre></td> --><td class="rouge-code"><pre><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">process</span><span class="o">(</span>
+    <span class="nc">Set</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="nc">TypeElemnet</span><span class="o">&gt;</span> <span class="n">annotations</span><span class="o">,</span> 
+    <span class="nc">RoundEnvironment</span> <span class="n">roundEnv</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="n">roundEnv</span><span class="o">.</span><span class="na">getElementAnnotatedWith</span><span class="o">(</span><span class="nc">Magic</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+         
+        <span class="k">for</span><span class="o">(</span><span class="nc">Element</span> <span class="n">element</span> <span class="o">:</span> <span class="n">elements</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Name</span> <span class="n">simpleName</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="na">getSimpleName</span><span class="o">();</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">element</span><span class="o">.</span><span class="na">getKind</span><span class="o">()</span> <span class="o">!=</span> <span class="nc">ElementKind</span><span class="o">.</span><span class="na">INTERFACE</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">processingEnv</span><span class="o">.</span><span class="na">getMessager</span><span class="o">().</span><span class="na">printMessage</span><span class="o">(</span><span class="nc">Diagnostic</span><span class="o">.</span><span class="na">Kind</span><span class="o">.</span><span class="na">ERROR</span><span class="o">,</span> <span class="s">"ERROR"</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="n">processingEnv</span><span class="o">.</span><span class="na">getMessager</span><span class="o">().</span><span class="na">printMessage</span><span class="o">(</span><span class="nc">Diagnostic</span><span class="o">.</span><span class="na">Kind</span><span class="o">.</span><span class="na">NOTE</span><span class="o">,</span> <span class="s">"name: "</span> <span class="o">+</span> <span class="n">simpleName</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+
+        <span class="nc">TypeElement</span> <span class="n">typeElement</span> <span class="o">=</span> <span class="o">(</span><span class="nc">TypeElement</span><span class="o">)</span><span class="n">element</span><span class="o">;</span>
+        <span class="nc">ClassName</span> <span class="n">className</span> <span class="o">=</span> <span class="nc">ClassName</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">typeElement</span><span class="o">);</span>
+
+        <span class="nc">MethodSpec</span> <span class="n">pullOut</span> <span class="o">=</span> <span class="nc">MethodSpec</span><span class="o">.</span><span class="na">methodBuilder</span><span class="o">(</span><span class="s">"pullOut"</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">addModifiers</span><span class="o">(</span><span class="nc">Modifier</span><span class="o">.</span><span class="na">PUBLIC</span><span class="o">);</span>
+            <span class="o">.</span><span class="na">returns</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">addStatement</span><span class="o">(</span><span class="s">"return $s"</span><span class="o">,</span> <span class="s">"Rabbits!"</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="nc">TypeSpec</span> <span class="nc">MagicMoja</span> <span class="o">=</span> <span class="nc">TypeSpec</span><span class="o">.</span><span class="na">classBuilder</span><span class="o">(</span><span class="s">"MagicMoja"</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">addModifiers</span><span class="o">(</span><span class="nc">Modifier</span><span class="o">.</span><span class="na">PUBLIC</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">addSuperinterface</span><span class="o">(</span><span class="n">className</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">addMethod</span><span class="o">(</span><span class="n">pullOut</span><span class="o">)</span>
+            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="nc">Filter</span> <span class="n">filter</span> <span class="o">=</span> <span class="n">processsingEnv</span><span class="o">.</span><span class="na">getFilter</span><span class="o">();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">JavaFile</span><span class="o">.</span><span class="na">builder</span><span class="o">(</span><span class="n">className</span><span class="o">.</span><span class="na">packageName</span><span class="o">(),</span> <span class="n">magicMoja</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+                <span class="o">.</span><span class="na">writeTo</span><span class="o">(</span><span class="n">filter</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">processingEnv</span><span class="o">.</span><span class="na">getMessager</span><span class="o">().</span><span class="na">printMessage</span><span class="o">(</span><span class="nc">Diagnostic</span><span class="o">.</span><span class="na">Kind</span><span class="o">.</span><span class="na">ERROR</span><span class="o">,</span> <span class="s">"ERROR"</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<ol>
+  <li>META-INF.services에 javax.annotation.processing.Processor에 만든 Processor의 풀패키지 경로를 입력(Processor를 등록)
+    <ul>
+      <li>Processor가 만들어지지 않은 상태에서 빌드를 하기 때문에 빌드하고 작성해야함</li>
+      <li>아니면 auto-Service를 사용하자</li>
+    </ul>
+  </li>
+  <li>다른 프로젝트에 만든 Processor의 의존성을 주입한다.</li>
+  <li>소스코드 경로를 추가해 준다.</li>
+  <li></li>
+</ol>
+:ET
