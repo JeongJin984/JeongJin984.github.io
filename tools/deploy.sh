@@ -1,11 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Deploy the content of _site to 'origin/<pages_branch>'
-#
-# v2.5
-# https://github.com/cotes2020/jekyll-theme-chirpy
-# © 2020 Cotes Chung
-# Published under MIT License
 
 set -eu
 
@@ -15,10 +10,9 @@ _no_branch=false
 _backup_dir="$(mktemp -d)"
 
 init() {
-
-  # Gemfile could be changed by `bundle install` in actions workflow
-  if [[ -n $(git status Gemfile.lock --porcelain) ]]; then
-    git checkout -- Gemfile.lock
+  if [[ -z ${GITHUB_ACTION+x} ]]; then
+    echo "ERROR: This script is not allowed to run outside of GitHub Action."
+    exit -1
   fi
 
   if [[ -z $(git branch -av | grep "$PAGES_BRANCH") ]]; then
@@ -30,7 +24,7 @@ init() {
 }
 
 backup() {
-  mv /home/jeongjin/works/myProfile/JeongJin984.github.io/_site/* "$_backup_dir"
+  mv _site/* "$_backup_dir"
   mv .git "$_backup_dir"
 
   # When adding custom domain from Github website,

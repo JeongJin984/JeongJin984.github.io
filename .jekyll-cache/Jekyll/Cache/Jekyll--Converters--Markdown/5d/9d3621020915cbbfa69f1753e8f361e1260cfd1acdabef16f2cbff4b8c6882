@@ -1,6 +1,0 @@
-I"�<h2 id="용어-정리">용어 정리</h2>
-<p>###epoch</p>
-<ul>
-  <li>One Epoch is when an ENTIRE dataset is passed forward and backward through the neural network only ONCE</li>
-</ul>
-:ET

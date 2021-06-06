@@ -1,8 +1,0 @@
-I"Â<h1 id="numpydeeplearning"><strong>Numpy&amp;DeepLearning</strong></h1>
-<hr />
-<h2 id="relu">Relu</h2>
-<p>```python
-class Relu:
-    def <strong>init</strong>(self):
-        self.mask = None</p>
-:ET
