@@ -3,11 +3,11 @@ title: Operation System 2 process 2
 author: Jiny
 date: 2021-06-05 14:30:00 +0800
 categories: [CS, OS]
-tags: [cs, os]
+tags: [cs, os, process]
 toc: false
 ---
  
-# Operation System 3(프로세스 2)
+# Operation System 2(프로세스 2)
 ___
 
 ## 💿 **System Call**

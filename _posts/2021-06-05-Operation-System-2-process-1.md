@@ -3,7 +3,7 @@ title: Operation System 2 process 1
 author: Jiny
 date: 2021-06-05 14:30:00 +0800
 categories: [CS, OS]
-tags: [cs, os]
+tags: [cs, os, process]
 toc: false
 ---
  
@@ -147,12 +147,22 @@ ___
     - Time Quantum or Time Slice : 실행의 최소 단위 시간
   - 할당 시간(Time Quantum)이 크면 FCFS와 같게 되고, 작으면 문맥 교환 (Context Switching) 잦아져서 오버헤드 증가
 - SRTF 스케줄링(Shortest Remaining-Time First Scheduling)
-- 다단계 큐 스케줄링(Multilevel Queue Scheduling)
-- 다단계 피드백 큐 스케줄링(Multilevel Feedback Queue Scheduling)
 - RM 스케줄링(Rate Monotonic Scheduling)
 - EDF 스케줄링(Earliest Deadline First Scheduling)
 
-+ 
++ MultiLevel Queue(다단계 큐)
+![image](https://user-images.githubusercontent.com/13609011/91695428-16a2f480-eba9-11ea-8d91-17d22bab01e5.png)
+  - 작업들을 여러 종류의 그룹으로 나누어 여러개의 큐를 이용
+  - 우선 순위가 낮은 큐들이 실행 못하는 걸 방지하고자 각 큐마다 다른 Time Quantum을 설정 해주는 방식 사용
+  - 우선 순위가 높은 큐는 작은 Time Quantum 할당. 낮은 큐는 큰 거에 할당
+![image](https://user-images.githubusercontent.com/13609011/91695480-2a4e5b00-eba9-11ea-8dbf-390bf0a73c10.png)
+
++ MultiLevel-Feedback-Queue(다단계 피드백 큐)
+![image](https://user-images.githubusercontent.com/13609011/91695489-2cb0b500-eba9-11ea-8578-6602fee742ed.png)
+  - 다단계 큐에서 자신의 Time Quantum을 다 채운 프로세스는 밑으로 내려가고 그렇지 않으면 그대로
+    - Time Quantum을 다 채운 프로세스는 CPU burst 프로세스로 판단하기 때문
+  - 짧은 작업에 유리, 입출력 위주(Interrupt)가 잦은 작업에 우선권을 줌
+  - 처리 시간이 짧은 프로세스를 먼저 처리하기 때문에 Turnaround 평균 시간을 줄여줌
 
 ___
 

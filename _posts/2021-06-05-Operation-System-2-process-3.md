@@ -1,13 +1,13 @@
 ---
-title: Operation System 4
+title: Operation System 2 process 3
 author: Jiny
 date: 2021-06-05 14:30:00 +0800
 categories: [CS, OS]
-tags: [cs, os]
+tags: [cs, os, process]
 toc: false
 ---
  
-# Operation System 4(프로세스 3)
+# Operation System 2(프로세스 3)
 ___
 
 ## 💿 **System Call**
