@@ -30,7 +30,7 @@ init() {
 }
 
 backup() {
-  mv ./_site/* "$_backup_dir"
+  mv /home/jeongjin/works/myProfile/JeongJin984.github.io/_site/* "$_backup_dir"
   mv .git "$_backup_dir"
 
   # When adding custom domain from Github website,
