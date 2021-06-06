@@ -1,9 +1,9 @@
 ---
 title: Operation System 6 Virtual Memory
 author: Jiny
-date: 2021-06-05 14:30:00 +0800
+date: 2021-06-06 15:30:00 +0800
 categories: [CS, OS]
-tags: [cs, os, thread]
+tags: [cs, os, virtual-memory]
 toc: false
 ---
  

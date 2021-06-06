@@ -2,7 +2,7 @@
 title: Computer Architecure 3
 author: Jiny
 date: 2021-06-04 00:00:00 +0800
-categories: [CS, Computer-Architecture]
+categories: [CS, ComputerArchitecture]
 tags: [cs, computerarchitecture, hardware]
 toc: false
 ---

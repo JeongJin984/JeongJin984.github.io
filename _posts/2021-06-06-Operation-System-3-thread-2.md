@@ -1,9 +1,9 @@
 ---
 title: Operation System 3 thread 2
 author: Jiny
-date: 2021-06-06 14:30:00 +0800
+date: 2021-06-06 11:30:00 +0800
 categories: [CS, OS]
-tags: [cs, os, process]
+tags: [cs, os, thread]
 toc: false
 ---
  

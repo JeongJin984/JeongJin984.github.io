@@ -1,9 +1,9 @@
 ---
 title: Operation System 4 memory
 author: Jiny
-date: 2021-06-05 14:30:00 +0800
+date: 2021-06-06 12:30:00 +0800
 categories: [CS, OS]
-tags: [cs, os, thread]
+tags: [cs, os, memory]
 toc: false
 ---
  

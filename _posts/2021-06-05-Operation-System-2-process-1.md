@@ -1,7 +1,7 @@
 ---
 title: Operation System 2 process 1
 author: Jiny
-date: 2021-06-05 14:30:00 +0800
+date: 2021-06-05 10:30:00 +0800
 categories: [CS, OS]
 tags: [cs, os, process]
 toc: false
