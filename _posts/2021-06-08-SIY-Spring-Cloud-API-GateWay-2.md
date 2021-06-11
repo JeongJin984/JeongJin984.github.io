@@ -8,17 +8,20 @@ toc: false
 ---
  
 # Spring Cloud Api Gateway(인증 및 인가)
+
 ___
 
 ## 💿 **CORS**
 
 API Gateway도 cors policy가 적용 되므로 defaultfilter를 적용해 줌으로서 허용하는 origin을 설정할 수 있다.
+
 ___
 
 ## 💿 **인증 방식**
 
 - 쿠키를 이용한 jwt 인증
 - redis의 Cache를 이용한 logout
+
 ___
 
 ## 💿 **인증 하는 곳**

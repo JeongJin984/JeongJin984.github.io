@@ -8,6 +8,7 @@ toc: false
 ---
  
 # SIY Spring Cloud Config(RabbitMQ)
+
 ___
 
 ![image](https://madplay.github.io/img/post/2020-01-30-introduction-to-spring-cloud-config-1.png)
@@ -18,10 +19,13 @@ actuator를 통해 원격에서 REST API를 통해 서비스를 Refresh 시킬 �
 
 또한, 실행중에 빌드, 배포 없이 동적으로 변경시킬 수 있습니다.
 
+___
+
 ## 💿 **준비**
 
 - RabbitMQ 설치
   - 먼저 Erlang 설치해야됨
+
 ___
 
 ## 💿 **bootstrap.yml**
@@ -39,11 +43,13 @@ spring:
 ```
 
 이것은  siyGateway-dev라는 yml파일을 통해 설정하겠다는 것을 의미
+
 ___
 
 ## 💿 **Exhange Type**
 
 아무것도 설정하지 않았는데 아마도 FanOut방식 인 것 같다.
+
 ___
 
 ## 💿 **주의 사항**
