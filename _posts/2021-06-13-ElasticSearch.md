@@ -1,7 +1,7 @@
 ---
 title: Elasticsearch
 author: Jiny
-date: 2021-06-08 14:30:00 +0800
+date: 2021-06-13 14:30:00 +0800
 categories: [ElasticSearch]
 tags: [elasticsearch, bigdata, elk]
 toc: false
