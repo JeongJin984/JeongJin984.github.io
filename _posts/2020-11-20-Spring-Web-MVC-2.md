@@ -1,5 +1,5 @@
 ---
-title: Spring-Web-MVC-2
+title: Spring Web MVC 2
 author: Jiny
 date: 2020-11-20 00:14:00 +0800
 categories: [Java, Spring]
@@ -7,10 +7,11 @@ tags: [web, springmvc]
 toc: false
 ---
 
-# **Web MVC2**
+#  **Web MVC 2**
+
 ---
 
-### DispatcherServlet
+## 💿 **DispatcherServlet**
 
 > Servlet Container에서 Http를 통해 들어오는 모든 요청을 Presentation 계층의 제일 앞에 둬서 중앙 집중식으로 처리 해 주는 Front Controller
 
@@ -30,16 +31,21 @@ toc: false
   |- Servlet WebApplicationContext extends Root WebApplicationContext
   |                
   |- Root WebApplicationContext
+
 </pre>
+
 ---
-Servlet WAC
+
+## 💿 **WAC**
+
+### **Servlet WAC**
 - 특정 servlet 스코프 안에서 사용한 IOC Bean Factory
 - Root를 상속하기 때문에 Servlet WAC에서 부모 bean을 사용할 수 있다
 
-Root WAC
+### **Root WAC**
 - 모든 Scope 에서 사용할 IOC BEAN Factory
 - 이건 ContextLoaderListener가 만들어줌
----
+
 **example**
 
 Appconfig.java
@@ -61,15 +67,19 @@ servlet app의 init-param의 contextConfigLocation의 param-value를 Webconfig�
 
 그런데 보통은 상속구조를 만들어서 사용하지 않음 SprintBoot도 메인에 ComponentScan달아서 그냥 Root로 쓰는 듯?
 
-### DispatcherServlet의 동작
+___
 
-**DispatcherServlet의 초기화**
+
+## 💿 DispatcherServlet의 동작
+
+### **DispatcherServlet의 초기화**
 - 다음의 특별한 타입의 Bean들을 찾거나, 기본 전력에 해당하는 Bean들을 등록한다.
 - HandlerMapping: 핸들러를 찾아주는 인터페이스
 - HandlerAdapter: 핸들러를 실행하는 인터페이스
 
 
-**과정**
+### **과정**
+
 1. 요청을 분석한다.(locale, theme,multipart)
 2. (핸들러 맵핑에게 위임하여) 요청을 처리할 핸들러를 찾는다.
 4. 찾아낸 "핸들러 어댑터"를 사용하여 핸들러의 응답을 처리한다.
