@@ -2,7 +2,7 @@
 title: Programming Skills 2
 author: Jiny
 date: 2021-06-13 14:30:00 +0800
-categories: [Programming, BackEnd]
+categories: [Backend, Basics]
 tags: [web, backend]
 toc: false
 ---
