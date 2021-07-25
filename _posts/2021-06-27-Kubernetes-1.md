@@ -67,6 +67,8 @@ _https://startkubernetes.com/blog/k8s_master_and_worker_nodes_
 - rw 뿐만 아니라 watch 기능으로 상태변경 체크 가능
 - 오직 API 서버와 통신하고, 다른 모듈은 API 서버를 거쳐서 etcd 데이터에 접근함
 
+___
+
 ## 💿 **POD**
 
 ![image](https://www.slipp.net/wiki/download/attachments/41583706/image2019-9-16_16-5-44.png?version=1&modificationDate=1568624763000&api=v2)
@@ -78,15 +80,87 @@ _https://startkubernetes.com/blog/k8s_master_and_worker_nodes_
 - 여러 프로세스를 실행하기 위해서는 컨테이너 당 단일 프로세스가 적합
 - 다수의 프로세스를 제어하려면 -> 다수의 컨테이너를 다룰 수 있는 그룹이 필요
 
-**장점**
+### **장점**
 
 - 밀접하게 연관된 프로세스를 함께 실행하고 마치 하나의 환경에서 동작하는 것처럼 보임
 - 동일한 환경을 제공하면서 다소 격리된 상태로 유지
-
-**동일한 포드의 컨테이너 사이의 부분 격리**
+ 
+### **동일한 포드의 컨테이너 사이의 부분 격리**
 
 - 포드의 모든 컨테이너는 동일한 네트워크 및 UTS 네임스페이스에서 실행
 - 같은 호스트 이름 및 네트워크 인터페이스를 공유(포드 충돌 가능성 있음)
 - 포드의 모든 컨테이너는 동일한 IPC 네임스페이스 아래에서 실행되며 IPC를 통해 통신 가능
   - 최근에는 동일한 PID 네임스페이스를 공유할 수 있지만 이 기능은 기본적으로 활성화 되있지 않음
+
+### **YML에서의 포드 정의**
+
+> apiVersion, kind, meta-data, spec, satus로 구성
+
+- 구성요소
+  - apiVersion: k8s api 버전을 가리킴
+  - kind: 어떤 리소스 유형인지 결정(Pod-Replica-Controller, Service, Pod 등등)
+  - 메타데이터: 포드와 관련된 이름, 네임 스페이스, 라벨, 그 밖의 정보 존재
+  - 스펙: 컨테이너, 볼륨 등의 정보
+  - 상태: 포드의 상태, 각 컨테이너의 설명 및 상태, 포드 내부의 IP 및 그 밖의 기본 정보 등
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
+```
+
+___
+
+## 💿 **레이블과 셀렉터**
+
+### **레이블**
+
+![image](https://raw.githubusercontent.com/act-coe/act-coe.github.io/master/images/k8s/chapter3/figure3.6.png)
+
+> 포드를 그룹별로 구별하기 위한 값
+
+- 모든 리소스를 시작하는 매우 간단하면서도 강력한 쿠버네티스 기능
+- 리소스에 첨부하는 임의의 key-value 쌍
+- 레이블에 셀렉터를 사용하면 각종 리소스를 필터링하여 선택할 수 있음
+- 리소스는 한 개 이상의 레이블을 가질 수 있음
+- 리소스를 만드는 시점에 레이블을 첨부
+- 기존 리소스에도 레이블의 값을 수정 및 추가 기능
+- 모든 사람이 쉽게 이해 할 수 있는 체계적인 시스템 구축 가능
+  - app: app 구성요소, 마이크로 서비스 유형 지정
+  - rel: 어플리케이션 버전 지정
+
+```yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: label-demo
+  labels:
+    environment: production
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+```
+
+- 새로운 레이블 추가: label 명령어
+  - kubectl label pod http-go-v2 test=foo
+- 기존 레이블을 수정: --overwrite 옵션을 줘서 실행
+  - kubectl label pod http-go-v2 rel-beta --overwrite
+- 레이블 보기
+  - kubectl get pod --show-labels
+- 특정 레이블 칼럼
+  - kubectl get pod -L app, rel
+
+___
 
