@@ -7,7 +7,7 @@ tags: [k8s, kubernetes, infra]
 toc: false
 ---
  
-# Kubernetes network
+# Kubernetes network 1
 
 ___
 
@@ -125,7 +125,7 @@ Pod의 IP는 통신하기위한 엔드포인트로 적절하지 않다. 예를 �
 
 > 이러한 방법을 통해 service IP 10.3.241.152:80로 들어온 요청을 마법처럼 실제 server Pod가 위치한 10.0.2.2:8080로 전달할 수 있습니다. 
 
-netfilter의 능력을 보자면, 이 모든 것을 하기 위해서는 단지 kube-proxy가 자신의 포트를 열고 마스터 api 서버로 부터 전달 받은 service 정보를 netfilter에 알맞는 규칙으로 입력하는 것 외엔 다른 것이 필요 없습니다.
+netfilter의 능력을 보자면, 이 모든 것을 하기 위해서는 단지 kube-proxy가 자신의 포트를 열고 **마스터 api 서버**로 부터 전달 받은 service 정보를 netfilter에 알맞는 규칙으로 입력하는 것 외엔 다른 것이 필요 없습니다.
 
 k8s는 userspace에서 proxing을 수행하기 때문에 모든 패킷을 user space에서 kernal space로 변환해야 합니다. 이를 해결하기 위해 kubernetes 1.2 kube proxy에서는 iptables mode가 생겼습니다. 이 모드에서는 kube proxy가 직접 proxy의 설정을 하지 않고 그 역할을 netfilterdp 맡깁니다. 이를 통해 service IP를 발견하고 그것을 실제 Pod로 전달하는 것은 모두 netfilter가 담당하게 되었고 kube-proxy는 단순히 이 netfilter의 규칙을 알맞게 수정하는 것을 담당할 뿐입니다.
 
@@ -144,9 +144,12 @@ ___
 
 ## 💿 **Kube Proxy의 Service 감지**
 
+![image](https://coffeewhale.com/assets/images/k8s_network/03_02.png)
+
 kube proxy는  마스터 노드의 api server의 정보를 수신하기 때문에 클러스터의 변화를 감지함 이를 통해 지속적으로 iptable을 업데이트하여 netfilter의 규칙을  변화시킵니다. 새로운 서비스가 생성되면 kube-proxy는  알림을 받고 그에 맞는 규칙을 생성합니다. 반대로 service가 삭제되면 이와 비슷한 방법으로 규칙을 삭제합니다. 
 
 서버의 health-check는 kubelet을 통하여 수행합니다. kubelet은 서버에서 설치되는 쿠버네티스 컴포넌트 중 하나로 서버(노드의) Pod를 직접 관리합니다. 이 kubelet이 서버의 health check을 수행하여 문제를 발견시 마스터 api 서버를 통해 kube-proxy에게 알려 unhealthy Pod의 endpoint를 제거합니다.
 
 이러한 것들을 기반으로 고가용성을 유지하는데 단점으로는 Pod에서 요청한 Request만 위와 같은 방법으로 동작합니다. 
-또한 netfilter를 사용하기 때문에 외부에서 들어온 요청에 대해 원 요청자의 origin IP가 수정된다는 것입니다. 이 부분은 Ingress의 설명에서 깊게 설명하겠습니다.
+또한 netfilter를 사용하기 때문에 외부에서 들어온 요청에 대해 원 요청자의 origin IP가 수정된다는 것입니다. 이 부분은 2편에서 계속...
+
