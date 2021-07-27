@@ -33,7 +33,7 @@ ___
 
 ___
 
-## **Liveness Probe**
+## 💿 **Liveness Probe**
 
 ```yml
 apiVersion: v1
@@ -65,7 +65,7 @@ spec:
 
 ___
 
-## **Readiness Probe**
+## 💿 **Readiness Probe**
 
 ```yml
 apiVersion: v1
@@ -105,7 +105,7 @@ spec:
 
 ___
 
-### **Startup Probe**
+## 💿 **Startup Probe**
 
 ```yml
 ports:
