@@ -1,5 +1,5 @@
 ---
-title: Kubernetes network
+title: Kubernetes network 2
 author: Jiny
 date: 2021-07-27 14:30:00 +0800
 categories: [Infra, Kubernetes]
@@ -58,5 +58,93 @@ ___
 - NodePort 타입의 서비스를 생성하면 kube-proxy가 각 노드의 eth0 네트워크 interface에 30000-32767 포트 사이의 임의의 포트를 할당하기 때문
 - 할당된 포트로 요청이 오게 되면 이것을 매핑된 ClusterIP로 전달
 
+**순서**
+> 1. LoadBalancer가 원하는 node의 노출된 IP 와 노출된 매핑 포트(10.100.0.3:32213)로 요청을 보냅니다.
+> 2. gateway는 service가 존재하는 node로 요청을 보냅니다.(eth0, 10.100.0.3)
+> 3. netfilter는 kube-proxy로 목적지를 바꿉니다.
+> 4. kube-proxy는 매핑된 포트번호(32213)을 보고 Cluster IP로 목적지를 바꿔서 목적지로 패킷을 전달합니다.
+
+### **문제점**
+
+1. NodePort 사용시 클라이언트 측에 non-standard 포트를 열어주어야함
+   - 로드 밸런서를 통해 해결
+   - 로드 밸런서에서는 일반 포트를 열어주고 실제 NodePort의 포트는 사용자로부터 안보이게 만들면 되기 때문
+2. 요청자의 source IP를 의도치 않게 가린다는 제약이 있음
+
+___
+
+## 💿 **Load Balancer**
+
+위에도 설명하였 듯이 모든 위부 트래픽은 NodePort를 통해 클러스터 내부로 들어온다. 로드 밸런서는 이에 더해 쿠버네티스가 이 모든 네트워크 컨트롤을 할 수 있게 한다.
+
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: service-test
+spec:
+  type: LoadBalancer
+  selector:
+    app: service_test_pod
+  ports:
+  - port: 80
+    targetPort: http
+```
+
+위와 같이 서비스를 생성하면 외부 공인 IP가 생성된다.
+
+```bash
+$ kubectl get svc service-test  
+NAME      CLUSTER-IP      EXTERNAL-IP     PORT(S)          AGE  
+openvpn   10.3.241.52     35.184.97.156   80:32213/TCP     5m
+```
+
+외부 공인 IP가 생성되기 위해서는 
+
+1. forwarding rule 설정
+2. target proxy
+3. 백엔드 서비스와 instance group 
+4. 외부 공인 IP
+
+이 설정 및 생성 되어야 한다. 이러한 것들은 자동으로 해준다.
+
+**제약사항**
+- TLS termination 설정이 불가능 함
+  - 따라서 한개의 로드 밸런서를 이용하여 여러 서비스에 연결을 하는 것이 불가능
+  - TLS/ssl termination트래픽을 암호화 및 암호 해독하는 컴퓨팅 집약적인 작업으로부터 백엔드 서버를 해방하기 위한 작업
+    - ex) client 와 lb 사이의 개방된 네트워크 에서는 https 통신, lb와 backend 사이는 http 통신을 가능케 하는 reverse proxy
+
+![image](https://user-images.githubusercontent.com/15958325/89248733-6c888900-d64b-11ea-9cfd-6b2aa0df8ce0.png)
+_tls/ssl termination_
+
+위와 같은 제약사항을 해소하기 위해서 Ingress라는 서비스가 생겼습니다.
+
+LoadBalancer 서비스 타입은 단지 한개의 내부 서비스를 외부 사용자들에게 접근 가능하도록 만드는 일을 담당합니다. 반대로 Ingress는 Tls termaintation이나 virtual hosts, path-based routing을 가능하게 합니다. 따라서 Ingress는 쉽게 한개의 로드 밸런서로 여러개의 backend 서비스들을 연결할 수 있게 합니다.
+
+___
+
+## 💿 **Ingress**
+
+```yml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: test-ingress
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+spec:
+  tls:
+    - secretName: my-ssl-secret
+  rules:
+  - host: testhost.com
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: service-test
+          servicePort: 80
+```
+
+Ingress Controller는 위의 방식대로 들어오는 요청을 적절한 서비스로 전달하는 역할을 담당한다. Ingress를 사용할 때 요청 받을 서비스를 NodePort 타입으로 설정하고 Ingress-Controller로 하여금 어떻게 요청을 각 노드에 전달할지 파악하게 합니다. 각 클라우드 플랫폼 마다의 Ingress-Controller 구현체가 있습니다. GCP의 경우 cloud load balancer, AWS에서는 elastic load balance가 있고 오픈소스로는 nginx나 haproxy 등이 있습니다. 어떤 환경에서는 LoadBalancer와 Ingerss를 같이 쓰면 오류가 생긴다.
 
 
