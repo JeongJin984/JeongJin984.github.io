@@ -2,7 +2,7 @@
 title: Java Lambda
 author: Jiny
 date: 2021-03-05 22:40:00 +0800
-categories: [Java, Jasic]
+categories: [Lang, Java]
 tags: [java, basic]
 toc: false
 ---
@@ -10,7 +10,7 @@ toc: false
 # Lambda
 ___
 
-## 함수형 프로그래밍
+## 💿 **함수형 프로그래밍**
 
 > 함수를 1급 객체로 취금하여 프로그래밍 하는 형식
 
@@ -18,7 +18,7 @@ ___
 
 ___
 
-## 🔘 Lambda Expressions
+## 💿 **Lambda Expressions**
 
 > 식별자 없이 실행 가능한 함수(()->{return foo;} or ()-> ())
 
@@ -41,7 +41,7 @@ ___
 
 ___
 
-## 🔘 @FunctionalInterface
+## 💿 **@FunctionalInterface**
 
 - Lambda 재사용을 위해 변수에 저장이 가능
 - 매개변수 혹은 반환값에 따라 함수의 자료형이 달라진다.
@@ -52,7 +52,7 @@ ___
 
 ___
 
-## 🔘 Variable Capture
+## 💿 **Variable Capture**
 
 - Lambda는 특정 상황에서 람다 함수 본문 외부에 선언된 변수에 접근이 가능하다.
 - java8 버전 이전에는 익명의 내부 클래스가 이를 둘러싼 메서드에 대한 로컬 변수를 캡처할 때 문제가 발생했다.
@@ -94,7 +94,7 @@ start는 지역 변수이고 final이 아니다.
 
 ___
 
-## 🔘 Method Reference
+## 💿 **Method Reference**
 
 - 메서드를 간결하게 지칭할 수 있는 방법으로 람다가 쓰이는 곳에서 사용이 가능
 - 일반 함수를 람다 형태로 사용할 수 있도록 함

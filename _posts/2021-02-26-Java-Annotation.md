@@ -2,7 +2,7 @@
 title: Spring
 author: Jiny
 date: 2021-01-26 22:40:00 +0800
-categories: [Java, Jasic]
+categories: [Lang, Java]
 tags: [java, basic]
 toc: false
 ---

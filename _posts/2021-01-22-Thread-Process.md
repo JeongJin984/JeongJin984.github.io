@@ -2,7 +2,7 @@
 title: Thread Process
 author: Jiny
 date: 2021-01-22 22:40:00 +0800
-categories: [Java, Jasic]
+categories: [Lang, java]
 tags: [java, basic]
 toc: false
 ---

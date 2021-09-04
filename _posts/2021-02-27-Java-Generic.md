@@ -2,7 +2,7 @@
 title: Java Generic
 author: Jiny
 date: 2021-01-27 22:40:00 +0800
-categories: [Java, Jasic]
+categories: [Lang, Java]
 tags: [java, basic]
 toc: false
 ---
@@ -10,7 +10,7 @@ toc: false
 # Generic
 ___
 
-## 🔘 Generic
+## 💿 **Generic**
 
 > Data Type을 일반화 하는것을 의미
 
@@ -59,7 +59,7 @@ class GenericSample<T> {
 
 ___
 
-## 🔘 Bounded type parameter
+## 💿 **Bounded type parameter**
 
 > 특정 타입의 서브 타입으로 제한
 
@@ -74,7 +74,9 @@ public class BoundTypeSample<T extends Number> {
 
 - Number의 서브 타입만 허용
 
-## 🔘 WildCard
+___
+
+## 💿 **WildCard**
 
 > 제네렉으로 구현된 Method의 경우 선언된 타입으로만 매개변수를 입력해야 한다. 이를 상속받은 클래스 혹은 부모 Class에서 사용 불가하기 하고 어떤 타입이 와도 상관없는 경우에 대응하기 좋지 않다.
 
@@ -96,7 +98,7 @@ public class BoundTypeSample<T extends Number> {
 
 ___
 
-## 🔘 매개변수화 타입(Parameterized Type)
+## 💿 **매개변수화 타입(Parameterized Type)**
 
 - 하나 이상의 타입 매개변수를 선언하고 있는 Class 나 Interface를 제네릭 클래스 또는 제네릭 인터페이스라고 하고 이를 제네릭 타입이라 한다. 각 제네릭 타입에서는 매개변수화 타입들을 정의한다.
   
@@ -148,7 +150,7 @@ public class Bus extends Car {}
 ```
 ___
 
-## 🔘 제네릭 메서드
+## 💿 **제네릭 메서드**
 
 ```
 - 접근지시자 <타입파라미더, ...> 리던타입 메서드명(매개변수, ...) { ... }의 형식
@@ -164,7 +166,7 @@ ___
 
 ___
 
-## 🔘 Erasure
+## 💿 **Erasure**
 
 > 원소 타입을 컴파일 타임에서만 검사하고 런타임에는 해당 타입 정보를 알수가 없다.
 

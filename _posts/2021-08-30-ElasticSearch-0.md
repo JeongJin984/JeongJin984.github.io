@@ -1,13 +1,13 @@
 ---
-title: Elasticsearch
+title: Elasticsearch 0
 author: Jiny
-date: 2021-06-13 14:30:00 +0800
+date: 2021-08-30 14:30:00 +0800
 categories: [ElasticSearch]
 tags: [elasticsearch, bigdata, elk]
 toc: false
 ---
  
-# Elasticsearch
+# Elasticsearch 0
 
 ___
 
@@ -54,6 +54,8 @@ ___
 
 ### **논리적 구조**
 
+![image](https://ssup2.github.io/images/theory_analysis/Elasticsearch_Data_Structure/Elasticsearch_Data_Structure.PNG)
+
 **도큐먼트(Document)**
 
 > 하나의 Doc은 다양한 필드로 구성되어 있으며 이 필드에는 데이터 필드에 해당하는 데이터 타입이 들어감.
@@ -87,7 +89,7 @@ ___
 - Elasticsearch를 클러스터로 구성했을 경우 Index는 여러 노드에 분산 저장/관리 됨
   - 기본설정은 5개의 Priamry shard 와 1개의 Replica shar를 생성함
 
-### **논리적 구조**
+### **물질적 구조**
 
 **노드**
 

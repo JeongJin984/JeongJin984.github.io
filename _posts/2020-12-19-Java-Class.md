@@ -2,7 +2,7 @@
 title: Java Class
 author: Jiny
 date: 2020-12-19 14:30:00 +0800
-categories: [Java, Jasic]
+categories: [Lang, java]
 tags: [java, basics]
 toc: false
 ---

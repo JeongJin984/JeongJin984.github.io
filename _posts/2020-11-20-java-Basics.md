@@ -2,7 +2,7 @@
 title: Java-Basics
 author: Jiny
 date: 2020-11-20 10:14:00 +0800
-categories: [Java, Jasics]
+categories: [Lang, Java]
 tags: [java, datatype]
 toc: false
 ---

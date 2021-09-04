@@ -2,7 +2,7 @@
 title: Java Exception
 author: Jiny
 date: 2021-01-16 11:48:00 +0800
-categories: [Java, Jasic]
+categories: [Lang, Java]
 tags: [java, basic]
 toc: false
 ---
